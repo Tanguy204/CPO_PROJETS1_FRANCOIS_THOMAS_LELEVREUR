@@ -4,6 +4,8 @@
  */
 package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author Tanguy
@@ -17,13 +19,15 @@ public  class TuileCouloir {
     boolean CoteDroit;
     boolean CoteGauche;
     String Item;
-    public TuileCouloir(boolean H,boolean B,boolean D,boolean G, String I){
+    BufferedImage Tuile;
+    public TuileCouloir(boolean H,boolean B,boolean D,boolean G, String I, BufferedImage T){
         
         CoteHaut=H;
         CoteBas=B;
         CoteDroit=D;
         CoteGauche=G;
         Item=I;
+        Tuile=T;
         
     }
 

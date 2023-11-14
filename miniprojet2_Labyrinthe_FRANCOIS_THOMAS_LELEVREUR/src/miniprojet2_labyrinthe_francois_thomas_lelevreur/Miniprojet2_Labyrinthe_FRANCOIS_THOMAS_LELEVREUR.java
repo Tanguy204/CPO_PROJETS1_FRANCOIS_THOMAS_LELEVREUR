@@ -14,7 +14,8 @@ public class Miniprojet2_Labyrinthe_FRANCOIS_THOMAS_LELEVREUR {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        Plateau Plateautest= new Plateau();
     }
     
 }
