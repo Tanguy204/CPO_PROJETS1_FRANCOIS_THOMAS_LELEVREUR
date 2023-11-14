@@ -53,13 +53,15 @@ public class Plateau {
            PileDeTuiles.add(new TuileCouloir(true,false,false,true,null));
         }
         Random random = new Random();
+        int compt=0;
         for ( int y = 0; y<3;y++){
-            int compt=0;
+            
         for (int i = 0; i<7;i++){
             compt+=1;
             int Col=(2*y)+1;
             int x = random.nextInt(34-compt);
             int Spin = random.nextInt(3);
+            System.out.println("x");
             Labyrinthe[i][Col]= PileDeTuiles.get(x);
             for(int j =0; j<Spin;j++){
                 Labyrinthe[i][Col].TournerTuileD();
@@ -67,8 +69,9 @@ public class Plateau {
             PileDeTuiles.remove(Labyrinthe[i][Col]);
         }
         }
+        int compt2=0;
         for ( int y = 0; y<3;y++){
-            int compt2=0;
+            
         for (int i = 0; i<4;i++){
             compt2+=1;
             int Col=(2*y)+1;
