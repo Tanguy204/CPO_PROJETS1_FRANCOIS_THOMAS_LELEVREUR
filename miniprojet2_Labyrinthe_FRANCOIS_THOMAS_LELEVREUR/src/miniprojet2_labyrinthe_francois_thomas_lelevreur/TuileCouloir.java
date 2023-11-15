@@ -4,7 +4,11 @@
  */
 package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -19,15 +23,17 @@ public  class TuileCouloir {
     boolean CoteDroit;
     boolean CoteGauche;
     String Item;
-    BufferedImage Tuile;
-    public TuileCouloir(boolean H,boolean B,boolean D,boolean G, String I, BufferedImage T){
+    
+    TuileGraphique Tuile;
+    public TuileCouloir(boolean H,boolean B,boolean D,boolean G, String I, String imagePath){
         
         CoteHaut=H;
         CoteBas=B;
         CoteDroit=D;
         CoteGauche=G;
         Item=I;
-        Tuile=T;
+        
+        Tuile= new TuileGraphique(imagePath );
         
     }
 
@@ -61,6 +67,7 @@ public void TournerTuileD(){
     CoteGauche=CoteBas;
     CoteBas=CoteDroit;
     CoteDroit=haut;
+    AffineTransform rotation = AffineTransform.getRotateInstance(Math.toRadians(45), 32, 32);
 }
 
 
