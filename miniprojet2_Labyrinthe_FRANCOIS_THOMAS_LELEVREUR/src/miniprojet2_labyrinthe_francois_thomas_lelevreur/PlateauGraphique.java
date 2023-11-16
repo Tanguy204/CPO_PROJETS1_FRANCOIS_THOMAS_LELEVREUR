@@ -4,11 +4,18 @@
  */
 package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.ImageObserver;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -20,6 +27,7 @@ import javax.swing.JPanel;
 public class PlateauGraphique extends javax.swing.JFrame {
 
     Plateau plateau;
+    JPanel PlateauGrph;
 
     /**
      * Creates new form PlateauGraphique
@@ -29,17 +37,28 @@ public class PlateauGraphique extends javax.swing.JFrame {
         int x = 64;
         // Vous devez également déclarer y s'il n'est pas déjà déclaré.
 
-        JLayeredPane layeredPane = new JLayeredPane();
+        JLayeredPane layeredPane = new JLayeredPane(){
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\plateauFond.jpg").getImage();
+                    g.drawImage(image, 0, 0, getWidth(), getHeight(), (ImageObserver) this);
+                }
+            };
+        
         getContentPane().add(layeredPane);
-
+        PlateauGrph = new JPanel();
+        
+        PlateauGrph.setOpaque(false);
+        PlateauGrph.setLayout(new GridLayout(7, 7));// Les valeurs RGB pour le bleu marine peuvent varier
         PlateauGrph.setPreferredSize(new Dimension(x * 7, x * 7));
-        PlateauGrph.setBounds(2 * x, 2 * x, 7 * x, 7 * x);
+        PlateauGrph.setBounds(10, 10, 7 * x, 7 * x);
 
         // Ajoutez le panneau au JLayeredPane
         layeredPane.add(PlateauGrph, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
         // Réglez la taille du JLayeredPane en fonction de la taille du panneau
-        layeredPane.setBounds(0, 0, x * 12, x * 12);
+        layeredPane.setBounds(2*x-10, 2*x-10, x * 7+20, x * 7+20);
         add(layeredPane);
 
         // Le reste de votre code...
@@ -55,14 +74,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 PlateauGrph.add(boutonTuile);
             }
         }
+        JLayeredPane layeredPane2 = new JLayeredPane();
+        layeredPane2.setBounds(0, 0, x * 12, x * 12);
+        add(layeredPane2);
         TuileEnPlus.setPreferredSize(new Dimension(x, x));
-        TuileEnPlus.setBounds(11 * x, 5 * x, x, x);
+        TuileEnPlus.setBounds(11 * x+10, 5 * x, x, x);
         TuileEnPlus.setLayout(new GridLayout(1, 1));
         TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
-        layeredPane.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        layeredPane2.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
         BtnTourner.setPreferredSize(new Dimension(32, 32));
-        BtnTourner.setBounds(11 * x + 16, 6 * x, 32, 32);
+        BtnTourner.setBounds(11 * x + 26, 6 * x, 32, 32);
         BtnTourner.setLayout(new GridLayout(1, 1));
         JButton droite = new JButton();
         ActionListener ecouteurClick = new ActionListener() {
@@ -77,7 +99,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         };
         droite.addActionListener(ecouteurClick);
         BtnTourner.add(droite);
-        layeredPane.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        layeredPane2.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
         
         
         
@@ -109,11 +131,25 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
                 }
             };
+            pousse.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
+                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
+                    pousse.setIcon(icon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    // Réinitialiser l'image lorsque la souris quitte le bouton
+                    pousse.setIcon(null);
+                }
+            });
             pousse.addActionListener(ecouteur);
             BoutonsPousser[k].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k].setBounds(128+imp*x,  x, x, x);
+            BoutonsPousser[k].setBounds(128+imp*x,  x-10, x, x);
             BoutonsPousser[k].add(pousse);
-            layeredPane.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
+            layeredPane2.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
             
             
         }
@@ -133,11 +169,25 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
                 }
             };
+            pousse.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
+                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
+                    pousse.setIcon(icon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    // Réinitialiser l'image lorsque la souris quitte le bouton
+                    pousse.setIcon(null);
+                }
+            });
             pousse.addActionListener(ecouteur);
             BoutonsPousser[k+3].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k+3].setBounds(x,  128+imp*x, x, x);
+            BoutonsPousser[k+3].setBounds(x-10,  128+imp*x, x, x);
             BoutonsPousser[k+3].add(pousse);
-            layeredPane.add(BoutonsPousser[k+3], JLayeredPane.DEFAULT_LAYER);
+            layeredPane2.add(BoutonsPousser[k+3], JLayeredPane.DEFAULT_LAYER);
             
             
         }
@@ -157,11 +207,25 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
                 }
             };
+            pousse.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
+                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
+                    pousse.setIcon(icon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    // Réinitialiser l'image lorsque la souris quitte le bouton
+                    pousse.setIcon(null);
+                }
+            });
             pousse.addActionListener(ecouteur);
             BoutonsPousser[k+6].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k+6].setBounds(9*x,  128+imp*x, x, x);
+            BoutonsPousser[k+6].setBounds(9*x+10,  128+imp*x, x, x);
             BoutonsPousser[k+6].add(pousse);
-            layeredPane.add(BoutonsPousser[k+6], JLayeredPane.DEFAULT_LAYER);
+            layeredPane2.add(BoutonsPousser[k+6], JLayeredPane.DEFAULT_LAYER);
             
             
         }
@@ -170,6 +234,11 @@ public class PlateauGraphique extends javax.swing.JFrame {
             int imp=(2*k)+1;
             
             JButton pousse = new JButton();
+                
+            
+            ImageIcon carre = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
+            pousse.setIcon(carre);
+            
             ActionListener ecouteur = new ActionListener() {
 
                 @Override
@@ -181,11 +250,25 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
                 }
             };
+            pousse.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
+                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
+                    pousse.setIcon(icon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    ImageIcon icon = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
+                    pousse.setIcon(icon);
+                }
+            });
             pousse.addActionListener(ecouteur);
             BoutonsPousser[k+9].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k+9].setBounds(128+imp*x,  9*x, x, x);
+            BoutonsPousser[k+9].setBounds(128+imp*x,  9*x+10, x, x);
             BoutonsPousser[k+9].add(pousse);
-            layeredPane.add(BoutonsPousser[k+9], JLayeredPane.DEFAULT_LAYER);
+            layeredPane2.add(BoutonsPousser[k+9], JLayeredPane.DEFAULT_LAYER);
             
             
         }
@@ -219,22 +302,10 @@ public class PlateauGraphique extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PlateauGrph = new javax.swing.JPanel();
         TuileEnPlus = new javax.swing.JPanel();
         BtnTourner = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout PlateauGrphLayout = new javax.swing.GroupLayout(PlateauGrph);
-        PlateauGrph.setLayout(PlateauGrphLayout);
-        PlateauGrphLayout.setHorizontalGroup(
-            PlateauGrphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
-        );
-        PlateauGrphLayout.setVerticalGroup(
-            PlateauGrphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 172, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout TuileEnPlusLayout = new javax.swing.GroupLayout(TuileEnPlus);
         TuileEnPlus.setLayout(TuileEnPlusLayout);
@@ -263,9 +334,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(PlateauGrph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(341, 341, 341)
                 .addComponent(TuileEnPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
                 .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,13 +346,11 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TuileEnPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PlateauGrph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(TuileEnPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(86, 86, 86)
                         .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addContainerGap(434, Short.MAX_VALUE))
         );
 
         pack();
@@ -324,7 +391,6 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BtnTourner;
-    private javax.swing.JPanel PlateauGrph;
     private javax.swing.JPanel TuileEnPlus;
     // End of variables declaration//GEN-END:variables
 }
