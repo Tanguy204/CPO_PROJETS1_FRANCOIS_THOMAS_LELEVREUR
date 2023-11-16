@@ -5,53 +5,108 @@
 package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
 import java.awt.Dimension;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Tanguy
  */
 public class PlateauGraphique extends javax.swing.JFrame {
+
     Plateau plateau;
+
     /**
      * Creates new form PlateauGraphique
      */
     public PlateauGraphique() {
         initComponents();
-        
+        int x = 64;
+        // Vous devez également déclarer y s'il n'est pas déjà déclaré.
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        getContentPane().add(layeredPane);
+
+        PlateauGrph.setPreferredSize(new Dimension(x * 7, x * 7));
+        PlateauGrph.setBounds(2 * x, 2 * x, 7 * x, 7 * x);
+
+        // Ajoutez le panneau au JLayeredPane
+        layeredPane.add(PlateauGrph, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+
+        // Réglez la taille du JLayeredPane en fonction de la taille du panneau
+        layeredPane.setBounds(0, 0, x * 12, x * 12);
+        add(layeredPane);
+
+        // Le reste de votre code...
+        this.pack();
+        this.revalidate();
+
         this.plateau = new Plateau();
-        PlateauGrph.setLayout(new GridLayout(7, 7));
-        PlateauGrph.setSize(new Dimension(224, 224));
-        
+
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 TuileGraphique boutonTuile = plateau.Labyrinthe[i][j].Tuile; // création d'un bouton
-                boutonTuile.setBounds(64*i, 64*j, 64, 64); // x, y, largeur, hauteur // ajout au Jpanel PanneauGrille
+                boutonTuile.setBounds(64 * i, 64 * j, 64, 64); // x, y, largeur, hauteur // ajout au Jpanel PanneauGrille
                 PlateauGrph.add(boutonTuile);
-            } 
+            }
         }
-     TuileEnPlus.setLayout(new GridLayout(1, 1));
-     TuileEnPlus.setSize(new Dimension(64, 64)); 
-     TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
-     
-     BtnTourner.setLayout(new GridLayout(1, 2));
-     BtnTourner.setSize(new Dimension(64, 64));
-     JButton droite = new JButton();
-     ActionListener ecouteurClick = new ActionListener() {
+        TuileEnPlus.setPreferredSize(new Dimension(x, x));
+        TuileEnPlus.setBounds(11 * x, 5 * x, x, x);
+        TuileEnPlus.setLayout(new GridLayout(1, 1));
+        TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
+        layeredPane.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+
+        BtnTourner.setPreferredSize(new Dimension(32, 32));
+        BtnTourner.setBounds(11 * x + 16, 6 * x, 32, 32);
+        BtnTourner.setLayout(new GridLayout(1, 1));
+        JButton droite = new JButton();
+        ActionListener ecouteurClick = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                plateau.TuilePoussoire.Tuile.rotationImageDroite();
+
+                repaint();
+
+            }
+        };
+        droite.addActionListener(ecouteurClick);
+        BtnTourner.add(droite);
+        layeredPane.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        JPanel[] BoutonsPousser;
+        BoutonsPousser = new JPanel[12];
+        
+        for (int i = 0; i < 12; i++) {
+            
+                BoutonsPousser[i] = new JPanel();
+                BoutonsPousser[i].setPreferredSize(new Dimension(x, x));
+                BoutonsPousser[i].setLayout(new GridLayout(1, 1));
+        }
+        for (int k = 0; k < 3; k++) {
+            
+            int imp=(2*k)+1;       
+            JButton pousse = new JButton();
+            ActionListener ecouteur = new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    plateau.TuilePoussoire.Tuile.rotationImageDroite();
-                    
+                    plateau.PousserLigneD(imp);
+
                     repaint();
-                    
+
                 }
             };
-            droite.addActionListener(ecouteurClick);
-            BtnTourner.add(droite);
+            pousse.addActionListener(ecouteur);
+            BoutonsPousser[0][k].add(pousse);
+        }
+
+        this.pack();
+        this.revalidate();
     }
 
     /**
@@ -73,7 +128,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         PlateauGrph.setLayout(PlateauGrphLayout);
         PlateauGrphLayout.setHorizontalGroup(
             PlateauGrphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 248, Short.MAX_VALUE)
+            .addGap(0, 272, Short.MAX_VALUE)
         );
         PlateauGrphLayout.setVerticalGroup(
             PlateauGrphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,7 +166,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 .addComponent(PlateauGrph, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TuileEnPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
                 .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -127,7 +182,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(86, 86, 86)
                         .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addContainerGap(346, Short.MAX_VALUE))
         );
 
         pack();
@@ -161,10 +216,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PlateauGraphique().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new PlateauGraphique().setVisible(true);
         });
     }
 
