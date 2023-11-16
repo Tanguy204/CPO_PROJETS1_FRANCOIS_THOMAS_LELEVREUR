@@ -34,6 +34,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
      */
     public PlateauGraphique() {
         initComponents();
+        this.plateau = new Plateau();
         int x = 64;
         // Vous devez également déclarer y s'il n'est pas déjà déclaré.
 
@@ -65,7 +66,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         this.pack();
         this.revalidate();
 
-        this.plateau = new Plateau();
+        
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
@@ -125,64 +126,25 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     plateau.PousserColonneB(imp);
-                    Actualiser(layeredPane);
+                    Actualiser(layeredPane,layeredPane);
 
                     repaint();
 
                 }
             };
-            pousse.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
-                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
-                    pousse.setIcon(icon);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    // Réinitialiser l'image lorsque la souris quitte le bouton
-                    pousse.setIcon(null);
-                }
-            });
-            pousse.addActionListener(ecouteur);
-            BoutonsPousser[k].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k].setBounds(128+imp*x,  x-10, x, x);
-            BoutonsPousser[k].add(pousse);
-            layeredPane2.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
-            
-            
         }
         for (int k = 0; k < 3; k++) {
             
             int imp=(2*k)+1;
             
             JButton pousse = new JButton();
-            ActionListener ecouteur = new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    plateau.PousserLigneD(imp);
-                    Actualiser(layeredPane);
-
-                    repaint();
-
-                }
+            ActionListener ecouteur = (ActionEvent e) -> {
+                plateau.PousserLigneD(imp);
+                Actualiser(layeredPane,layeredPane2);
+                
+                repaint();
             };
-            pousse.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
-                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
-                    pousse.setIcon(icon);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    // Réinitialiser l'image lorsque la souris quitte le bouton
-                    pousse.setIcon(null);
-                }
-            });
+            
             pousse.addActionListener(ecouteur);
             BoutonsPousser[k+3].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+3].setBounds(x-10,  128+imp*x, x, x);
@@ -196,31 +158,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
             int imp=(2*k)+1;
             
             JButton pousse = new JButton();
-            ActionListener ecouteur = new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    plateau.PousserLigneG(imp);
-                    Actualiser(layeredPane);
-
-                    repaint();
-
-                }
+            ActionListener ecouteur = (ActionEvent e) -> {
+                plateau.PousserLigneG(imp);
+                Actualiser(layeredPane,layeredPane2);
+                
+                repaint();
             };
-            pousse.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
-                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
-                    pousse.setIcon(icon);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    // Réinitialiser l'image lorsque la souris quitte le bouton
-                    pousse.setIcon(null);
-                }
-            });
+           
             pousse.addActionListener(ecouteur);
             BoutonsPousser[k+6].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+6].setBounds(9*x+10,  128+imp*x, x, x);
@@ -239,31 +183,14 @@ public class PlateauGraphique extends javax.swing.JFrame {
             ImageIcon carre = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
             pousse.setIcon(carre);
             
-            ActionListener ecouteur = new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    plateau.PousserColonneH(imp);
-                    Actualiser(layeredPane);
-
-                    repaint();
-
-                }
+            ActionListener ecouteur = (ActionEvent e) -> {
+                plateau.PousserColonneH(imp);
+                Actualiser(layeredPane,layeredPane2);
+                
+                repaint();
             };
-            pousse.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
-                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
-                    pousse.setIcon(icon);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    ImageIcon icon = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
-                    pousse.setIcon(icon);
-                }
-            });
+            
+            
             pousse.addActionListener(ecouteur);
             BoutonsPousser[k+9].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+9].setBounds(128+imp*x,  9*x+10, x, x);
@@ -276,22 +203,31 @@ public class PlateauGraphique extends javax.swing.JFrame {
         this.pack();
         this.revalidate();
     }
-    public void Actualiser(JLayeredPane layeredPane){
-        int x = 64;
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                TuileGraphique boutonTuile = plateau.Labyrinthe[i][j].Tuile; // création d'un bouton
-                boutonTuile.setBounds(64 * i, 64 * j, 64, 64); // x, y, largeur, hauteur // ajout au Jpanel PanneauGrille
-                PlateauGrph.add(boutonTuile);
-            }
-        }
-        TuileEnPlus.setPreferredSize(new Dimension(x, x));
-        TuileEnPlus.setBounds(11 * x, 5 * x, x, x);
-        TuileEnPlus.setLayout(new GridLayout(1, 1));
-        TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
-        layeredPane.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+    public void Actualiser(JLayeredPane layeredPane, JLayeredPane layeredPane2) {
+    int x = 64;
+    
+    // Effacez les composants existants du PlateauGrph avant d'ajouter les nouveaux
+    PlateauGrph.removeAll();
 
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            TuileGraphique boutonTuile = plateau.Labyrinthe[i][j].Tuile;
+            boutonTuile.setBounds(64 * i, 64 * j, 64, 64);
+            PlateauGrph.add(boutonTuile);
+        }
     }
+    
+    // Vous devrez peut-être appeler revalidate() et repaint() après avoir modifié le panneau
+    PlateauGrph.revalidate();
+    PlateauGrph.repaint();
+}
+    
+    
+    
+        
+        
+        
+       
 
     /**
      * This method is called from within the constructor to initialize the form.
