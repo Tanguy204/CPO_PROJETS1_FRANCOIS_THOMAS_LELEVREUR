@@ -78,7 +78,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
         droite.addActionListener(ecouteurClick);
         BtnTourner.add(droite);
         layeredPane.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        
+        
+        
+        
         JPanel[] BoutonsPousser;
+        
+        
         BoutonsPousser = new JPanel[12];
         
         for (int i = 0; i < 12; i++) {
@@ -89,24 +95,119 @@ public class PlateauGraphique extends javax.swing.JFrame {
         }
         for (int k = 0; k < 3; k++) {
             
-            int imp=(2*k)+1;       
+            int imp=(2*k)+1;
+            
             JButton pousse = new JButton();
             ActionListener ecouteur = new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    plateau.PousserLigneD(imp);
+                    plateau.PousserColonneB(imp);
+                    Actualiser(layeredPane);
 
                     repaint();
 
                 }
             };
             pousse.addActionListener(ecouteur);
-            BoutonsPousser[0][k].add(pousse);
+            BoutonsPousser[k].setPreferredSize(new Dimension(x, x));
+            BoutonsPousser[k].setBounds(128+imp*x,  x, x, x);
+            BoutonsPousser[k].add(pousse);
+            layeredPane.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
+            
+            
+        }
+        for (int k = 0; k < 3; k++) {
+            
+            int imp=(2*k)+1;
+            
+            JButton pousse = new JButton();
+            ActionListener ecouteur = new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    plateau.PousserLigneD(imp);
+                    Actualiser(layeredPane);
+
+                    repaint();
+
+                }
+            };
+            pousse.addActionListener(ecouteur);
+            BoutonsPousser[k+3].setPreferredSize(new Dimension(x, x));
+            BoutonsPousser[k+3].setBounds(x,  128+imp*x, x, x);
+            BoutonsPousser[k+3].add(pousse);
+            layeredPane.add(BoutonsPousser[k+3], JLayeredPane.DEFAULT_LAYER);
+            
+            
+        }
+        for (int k = 0; k < 3; k++) {
+            
+            int imp=(2*k)+1;
+            
+            JButton pousse = new JButton();
+            ActionListener ecouteur = new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    plateau.PousserLigneG(imp);
+                    Actualiser(layeredPane);
+
+                    repaint();
+
+                }
+            };
+            pousse.addActionListener(ecouteur);
+            BoutonsPousser[k+6].setPreferredSize(new Dimension(x, x));
+            BoutonsPousser[k+6].setBounds(9*x,  128+imp*x, x, x);
+            BoutonsPousser[k+6].add(pousse);
+            layeredPane.add(BoutonsPousser[k+6], JLayeredPane.DEFAULT_LAYER);
+            
+            
+        }
+        for (int k = 0; k < 3; k++) {
+            
+            int imp=(2*k)+1;
+            
+            JButton pousse = new JButton();
+            ActionListener ecouteur = new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    plateau.PousserColonneH(imp);
+                    Actualiser(layeredPane);
+
+                    repaint();
+
+                }
+            };
+            pousse.addActionListener(ecouteur);
+            BoutonsPousser[k+9].setPreferredSize(new Dimension(x, x));
+            BoutonsPousser[k+9].setBounds(128+imp*x,  9*x, x, x);
+            BoutonsPousser[k+9].add(pousse);
+            layeredPane.add(BoutonsPousser[k+9], JLayeredPane.DEFAULT_LAYER);
+            
+            
         }
 
         this.pack();
         this.revalidate();
+    }
+    public void Actualiser(JLayeredPane layeredPane){
+        int x = 64;
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                TuileGraphique boutonTuile = plateau.Labyrinthe[i][j].Tuile; // création d'un bouton
+                boutonTuile.setBounds(64 * i, 64 * j, 64, 64); // x, y, largeur, hauteur // ajout au Jpanel PanneauGrille
+                PlateauGrph.add(boutonTuile);
+            }
+        }
+        TuileEnPlus.setPreferredSize(new Dimension(x, x));
+        TuileEnPlus.setBounds(11 * x, 5 * x, x, x);
+        TuileEnPlus.setLayout(new GridLayout(1, 1));
+        TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
+        layeredPane.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+
     }
 
     /**
