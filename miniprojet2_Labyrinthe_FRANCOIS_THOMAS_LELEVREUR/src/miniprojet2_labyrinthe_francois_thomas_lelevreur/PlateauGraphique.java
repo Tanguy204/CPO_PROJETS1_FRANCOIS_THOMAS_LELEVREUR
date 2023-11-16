@@ -28,6 +28,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
     Plateau plateau;
     JPanel PlateauGrph;
+    JPanel TuileEnPlus;
+    Image carrePointille;
 
     /**
      * Creates new form PlateauGraphique
@@ -75,9 +77,18 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 PlateauGrph.add(boutonTuile);
             }
         }
-        JLayeredPane layeredPane2 = new JLayeredPane();
-        layeredPane2.setBounds(0, 0, x * 12, x * 12);
+        JLayeredPane layeredPane2 = new JLayeredPane(){
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\fondMarbre.jpg").getImage();
+                    g.drawImage(image, 0, 0, 788, 704, (ImageObserver) this);
+                }
+            };
+        layeredPane2.setBounds(0, 0, x * 12+20, x * 12);
         add(layeredPane2);
+        TuileEnPlus = new JPanel();
+        
         TuileEnPlus.setPreferredSize(new Dimension(x, x));
         TuileEnPlus.setBounds(11 * x+10, 5 * x, x, x);
         TuileEnPlus.setLayout(new GridLayout(1, 1));
@@ -103,7 +114,15 @@ public class PlateauGraphique extends javax.swing.JFrame {
         layeredPane2.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
         
         
-        
+        setPreferredSize(new Dimension(64, 64));
+        repaint();
+        ImageIcon imageIcon;
+
+        imageIcon = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
+
+        Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+
+        carrePointille = new ImageIcon(imageRedimenssionne).getImage();
         
         JPanel[] BoutonsPousser;
         
@@ -115,6 +134,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 BoutonsPousser[i] = new JPanel();
                 BoutonsPousser[i].setPreferredSize(new Dimension(x, x));
                 BoutonsPousser[i].setLayout(new GridLayout(1, 1));
+                BoutonsPousser[i].setOpaque(false);
         }
         for (int k = 0; k < 3; k++) {
             
@@ -132,6 +152,18 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
                 }
             };
+            pousse.addActionListener(ecouteur);
+            pousse.setOpaque(false);
+            pousse.setContentAreaFilled(false);
+            pousse.setBorderPainted(false);
+
+            boutonSurvole(pousse);
+            ImageIcon icon = new ImageIcon(carrePointille);
+            pousse.setIcon(icon);
+            BoutonsPousser[k].setPreferredSize(new Dimension(x, x));
+            BoutonsPousser[k].setBounds(128+imp*x,  x-10, x, x);
+            BoutonsPousser[k].add(pousse);
+            layeredPane2.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
         }
         for (int k = 0; k < 3; k++) {
             
@@ -146,6 +178,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
             };
             
             pousse.addActionListener(ecouteur);
+            pousse.setOpaque(false);
+            pousse.setContentAreaFilled(false);
+            pousse.setBorderPainted(false);
+
+            boutonSurvole(pousse);
+            ImageIcon icon = new ImageIcon(carrePointille);
+            pousse.setIcon(icon);
             BoutonsPousser[k+3].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+3].setBounds(x-10,  128+imp*x, x, x);
             BoutonsPousser[k+3].add(pousse);
@@ -166,6 +205,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
             };
            
             pousse.addActionListener(ecouteur);
+            pousse.setOpaque(false);
+            pousse.setContentAreaFilled(false);
+            pousse.setBorderPainted(false);
+
+            boutonSurvole(pousse);
+            ImageIcon icon = new ImageIcon(carrePointille);
+            pousse.setIcon(icon);
             BoutonsPousser[k+6].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+6].setBounds(9*x+10,  128+imp*x, x, x);
             BoutonsPousser[k+6].add(pousse);
@@ -180,8 +226,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             JButton pousse = new JButton();
                 
             
-            ImageIcon carre = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
-            pousse.setIcon(carre);
+            
             
             ActionListener ecouteur = (ActionEvent e) -> {
                 plateau.PousserColonneH(imp);
@@ -192,6 +237,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
             
             
             pousse.addActionListener(ecouteur);
+            pousse.setOpaque(false);
+            pousse.setContentAreaFilled(false);
+            pousse.setBorderPainted(false);
+
+            boutonSurvole(pousse);
+            ImageIcon icon = new ImageIcon(carrePointille);
+            pousse.setIcon(icon);
             BoutonsPousser[k+9].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+9].setBounds(128+imp*x,  9*x+10, x, x);
             BoutonsPousser[k+9].add(pousse);
@@ -203,11 +255,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
         this.pack();
         this.revalidate();
     }
+    
     public void Actualiser(JLayeredPane layeredPane, JLayeredPane layeredPane2) {
     int x = 64;
     
     // Effacez les composants existants du PlateauGrph avant d'ajouter les nouveaux
     PlateauGrph.removeAll();
+    TuileEnPlus.removeAll();
 
     for (int i = 0; i < 7; i++) {
         for (int j = 0; j < 7; j++) {
@@ -220,7 +274,26 @@ public class PlateauGraphique extends javax.swing.JFrame {
     // Vous devrez peut-être appeler revalidate() et repaint() après avoir modifié le panneau
     PlateauGrph.revalidate();
     PlateauGrph.repaint();
+    TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
 }
+    public void boutonSurvole(JButton button){
+        button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
+                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
+                    button.setIcon(icon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    // Réinitialiser l'image lorsque la souris quitte le bouton
+                    
+                    ImageIcon icon = new ImageIcon(carrePointille);
+                    button.setIcon(icon);
+                }
+            });
+    }
     
     
     
@@ -238,21 +311,9 @@ public class PlateauGraphique extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        TuileEnPlus = new javax.swing.JPanel();
         BtnTourner = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout TuileEnPlusLayout = new javax.swing.GroupLayout(TuileEnPlus);
-        TuileEnPlus.setLayout(TuileEnPlusLayout);
-        TuileEnPlusLayout.setHorizontalGroup(
-            TuileEnPlusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 63, Short.MAX_VALUE)
-        );
-        TuileEnPlusLayout.setVerticalGroup(
-            TuileEnPlusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 66, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout BtnTournerLayout = new javax.swing.GroupLayout(BtnTourner);
         BtnTourner.setLayout(BtnTournerLayout);
@@ -269,24 +330,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(341, 341, 341)
-                .addComponent(TuileEnPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(636, Short.MAX_VALUE)
                 .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(179, 179, 179))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(TuileEnPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(434, Short.MAX_VALUE))
+                .addGap(137, 137, 137)
+                .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(383, Short.MAX_VALUE))
         );
 
         pack();
@@ -327,6 +381,5 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BtnTourner;
-    private javax.swing.JPanel TuileEnPlus;
     // End of variables declaration//GEN-END:variables
 }
