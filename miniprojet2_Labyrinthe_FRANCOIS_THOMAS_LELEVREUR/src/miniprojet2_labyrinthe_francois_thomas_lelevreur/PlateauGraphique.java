@@ -87,35 +87,55 @@ public class PlateauGraphique extends javax.swing.JFrame {
             };
         layeredPane2.setBounds(0, 0, x * 12+20, x * 12);
         add(layeredPane2);
-        TuileEnPlus = new JPanel();
+        defTuileEnPlus( layeredPane2);
         
-        TuileEnPlus.setPreferredSize(new Dimension(x, x));
-        TuileEnPlus.setBounds(11 * x+10, 5 * x, x, x);
-        TuileEnPlus.setLayout(new GridLayout(1, 1));
-        TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
-        layeredPane2.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
-
-        BtnTourner.setPreferredSize(new Dimension(32, 32));
-        BtnTourner.setBounds(11 * x + 26, 6 * x, 32, 32);
-        BtnTourner.setLayout(new GridLayout(1, 1));
-        JButton droite = new JButton();
-        ActionListener ecouteurClick = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                plateau.TuilePoussoire.Tuile.rotationImageDroite();
-
-                repaint();
-
-            }
-        };
-        droite.addActionListener(ecouteurClick);
-        BtnTourner.add(droite);
-        layeredPane2.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        defBtnPousser(layeredPane,  layeredPane2);
         
         
-        setPreferredSize(new Dimension(64, 64));
-        repaint();
+        
+    }
+    
+    public void Actualiser(JLayeredPane layeredPane, JLayeredPane layeredPane2) {
+    int x = 64;
+    
+    // Effacez les composants existants du PlateauGrph avant d'ajouter les nouveaux
+    PlateauGrph.removeAll();
+    TuileEnPlus.removeAll();
+
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            TuileGraphique boutonTuile = plateau.Labyrinthe[i][j].Tuile;
+            boutonTuile.setBounds(64 * i, 64 * j, 64, 64);
+            PlateauGrph.add(boutonTuile);
+        }
+    }
+    
+    // Vous devrez peut-être appeler revalidate() et repaint() après avoir modifié le panneau
+    PlateauGrph.revalidate();
+    PlateauGrph.repaint();
+    TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
+}
+    public void boutonSurvole(JButton button){
+        button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
+                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
+                    button.setIcon(icon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    // Réinitialiser l'image lorsque la souris quitte le bouton
+                    
+                    ImageIcon icon = new ImageIcon(carrePointille);
+                    button.setIcon(icon);
+                }
+            });
+    
+    }
+    public void defBtnPousser(JLayeredPane layeredPane, JLayeredPane layeredPane2){
+        int x=64;
         ImageIcon imageIcon;
 
         imageIcon = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
@@ -146,7 +166,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     plateau.PousserColonneB(imp);
-                    Actualiser(layeredPane,layeredPane);
+                    Actualiser(layeredPane,layeredPane2);
 
                     repaint();
 
@@ -255,45 +275,35 @@ public class PlateauGraphique extends javax.swing.JFrame {
         this.pack();
         this.revalidate();
     }
-    
-    public void Actualiser(JLayeredPane layeredPane, JLayeredPane layeredPane2) {
-    int x = 64;
-    
-    // Effacez les composants existants du PlateauGrph avant d'ajouter les nouveaux
-    PlateauGrph.removeAll();
-    TuileEnPlus.removeAll();
+    public void defTuileEnPlus(JLayeredPane layeredPane2){
+        int x=64;
+    TuileEnPlus = new JPanel();
+        
+        TuileEnPlus.setPreferredSize(new Dimension(x, x));
+        TuileEnPlus.setBounds(11 * x+10, 5 * x, x, x);
+        TuileEnPlus.setLayout(new GridLayout(1, 1));
+        TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
+        layeredPane2.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 7; j++) {
-            TuileGraphique boutonTuile = plateau.Labyrinthe[i][j].Tuile;
-            boutonTuile.setBounds(64 * i, 64 * j, 64, 64);
-            PlateauGrph.add(boutonTuile);
-        }
-    }
-    
-    // Vous devrez peut-être appeler revalidate() et repaint() après avoir modifié le panneau
-    PlateauGrph.revalidate();
-    PlateauGrph.repaint();
-    TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
+        BtnTourner.setPreferredSize(new Dimension(32, 32));
+        BtnTourner.setBounds(11 * x + 26, 6 * x, 32, 32);
+        BtnTourner.setLayout(new GridLayout(1, 1));
+        JButton droite = new JButton();
+        ActionListener ecouteurClick = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                plateau.TuilePoussoire.Tuile.rotationImageDroite();
+
+                repaint();
+
+            }
+        };
+        droite.addActionListener(ecouteurClick);
+        BtnTourner.add(droite);
+        layeredPane2.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        
 }
-    public void boutonSurvole(JButton button){
-        button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    // Charger et définir une nouvelle image lorsque la souris survole le bouton
-                    ImageIcon icon = new ImageIcon(plateau.TuilePoussoire.Tuile.imageADessiner);
-                    button.setIcon(icon);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    // Réinitialiser l'image lorsque la souris quitte le bouton
-                    
-                    ImageIcon icon = new ImageIcon(carrePointille);
-                    button.setIcon(icon);
-                }
-            });
-    }
     
     
     
