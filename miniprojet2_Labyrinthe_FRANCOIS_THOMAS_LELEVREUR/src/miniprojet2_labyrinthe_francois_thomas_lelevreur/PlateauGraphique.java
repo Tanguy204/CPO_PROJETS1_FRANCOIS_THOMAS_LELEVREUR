@@ -44,7 +44,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
-                    Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\plateauFond.jpg").getImage();
+                    Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\PlateauFondV2.jpg").getImage();
                     g.drawImage(image, 0, 0, getWidth(), getHeight(), (ImageObserver) this);
                 }
             };
@@ -81,11 +81,11 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
-                    Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\fondMarbre.jpg").getImage();
-                    g.drawImage(image, 0, 0, 788, 704, (ImageObserver) this);
+                    Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\PlateauFondV2.png").getImage();
+                    g.drawImage(image, -70, -90, 1200, 902, (ImageObserver) this);
                 }
             };
-        layeredPane2.setBounds(0, 0, x * 12+20, x * 12);
+        layeredPane2.setBounds(0, 0, 1200, 902);
         add(layeredPane2);
         defTuileEnPlus( layeredPane2);
         
