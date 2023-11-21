@@ -128,8 +128,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 public void mouseExited(MouseEvent e) {
                     // Réinitialiser l'image lorsque la souris quitte le bouton
                     
-                    ImageIcon icon = new ImageIcon(carrePointille);
-                    button.setIcon(icon);
+                    button.setIcon(null);
                 }
             });
     
@@ -178,8 +177,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
             pousse.setBorderPainted(false);
 
             boutonSurvole(pousse);
-            ImageIcon icon = new ImageIcon(carrePointille);
-            pousse.setIcon(icon);
+            
+            
             BoutonsPousser[k].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k].setBounds(128+imp*x,  x-10, x, x);
             BoutonsPousser[k].add(pousse);
@@ -203,8 +202,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             pousse.setBorderPainted(false);
 
             boutonSurvole(pousse);
-            ImageIcon icon = new ImageIcon(carrePointille);
-            pousse.setIcon(icon);
+            
             BoutonsPousser[k+3].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+3].setBounds(x-10,  128+imp*x, x, x);
             BoutonsPousser[k+3].add(pousse);
@@ -230,8 +228,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             pousse.setBorderPainted(false);
 
             boutonSurvole(pousse);
-            ImageIcon icon = new ImageIcon(carrePointille);
-            pousse.setIcon(icon);
+            
             BoutonsPousser[k+6].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+6].setBounds(9*x+10,  128+imp*x, x, x);
             BoutonsPousser[k+6].add(pousse);
@@ -262,8 +259,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             pousse.setBorderPainted(false);
 
             boutonSurvole(pousse);
-            ImageIcon icon = new ImageIcon(carrePointille);
-            pousse.setIcon(icon);
+            
             BoutonsPousser[k+9].setPreferredSize(new Dimension(x, x));
             BoutonsPousser[k+9].setBounds(128+imp*x,  9*x+10, x, x);
             BoutonsPousser[k+9].add(pousse);
