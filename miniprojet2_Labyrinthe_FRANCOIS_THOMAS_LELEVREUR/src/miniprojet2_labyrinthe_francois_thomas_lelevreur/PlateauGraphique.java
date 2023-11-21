@@ -55,13 +55,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
         PlateauGrph.setOpaque(false);
         PlateauGrph.setLayout(new GridLayout(7, 7));// Les valeurs RGB pour le bleu marine peuvent varier
         PlateauGrph.setPreferredSize(new Dimension(x * 7, x * 7));
-        PlateauGrph.setBounds(10, 10, 7 * x, 7 * x);
+        PlateauGrph.setBounds(12, 12, 7 * x, 7 * x);
 
         // Ajoutez le panneau au JLayeredPane
         layeredPane.add(PlateauGrph, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
         // Réglez la taille du JLayeredPane en fonction de la taille du panneau
-        layeredPane.setBounds(2*x-10, 2*x-10, x * 7+20, x * 7+20);
+        layeredPane.setBounds(2*x, 2*x, x * 7+20, x * 7+20);
         add(layeredPane);
 
         // Le reste de votre code...
@@ -82,7 +82,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\PlateauFondV2.png").getImage();
-                    g.drawImage(image, -70, -90, 1200, 902, (ImageObserver) this);
+                    g.drawImage(image, -60, -80, 1200, 902, (ImageObserver) this);
                 }
             };
         layeredPane2.setBounds(0, 0, 1200, 902);
@@ -135,13 +135,6 @@ public class PlateauGraphique extends javax.swing.JFrame {
     }
     public void defBtnPousser(JLayeredPane layeredPane, JLayeredPane layeredPane2){
         int x=64;
-        ImageIcon imageIcon;
-
-        imageIcon = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\carrePointille.png");
-
-        Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-
-        carrePointille = new ImageIcon(imageRedimenssionne).getImage();
         
         JPanel[] BoutonsPousser;
         
@@ -180,7 +173,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             
             
             BoutonsPousser[k].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k].setBounds(128+imp*x,  x-10, x, x);
+            BoutonsPousser[k].setBounds(138+imp*x,  x, x, x);
             BoutonsPousser[k].add(pousse);
             layeredPane2.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
         }
@@ -204,7 +197,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             boutonSurvole(pousse);
             
             BoutonsPousser[k+3].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k+3].setBounds(x-10,  128+imp*x, x, x);
+            BoutonsPousser[k+3].setBounds(x,  138+imp*x, x, x);
             BoutonsPousser[k+3].add(pousse);
             layeredPane2.add(BoutonsPousser[k+3], JLayeredPane.DEFAULT_LAYER);
             
@@ -230,7 +223,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             boutonSurvole(pousse);
             
             BoutonsPousser[k+6].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k+6].setBounds(9*x+10,  128+imp*x, x, x);
+            BoutonsPousser[k+6].setBounds(9*x+20,  138+imp*x, x, x);
             BoutonsPousser[k+6].add(pousse);
             layeredPane2.add(BoutonsPousser[k+6], JLayeredPane.DEFAULT_LAYER);
             
@@ -261,7 +254,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             boutonSurvole(pousse);
             
             BoutonsPousser[k+9].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k+9].setBounds(128+imp*x,  9*x+10, x, x);
+            BoutonsPousser[k+9].setBounds(138+imp*x,  9*x+20, x, x);
             BoutonsPousser[k+9].add(pousse);
             layeredPane2.add(BoutonsPousser[k+9], JLayeredPane.DEFAULT_LAYER);
             
@@ -276,15 +269,20 @@ public class PlateauGraphique extends javax.swing.JFrame {
     TuileEnPlus = new JPanel();
         
         TuileEnPlus.setPreferredSize(new Dimension(x, x));
-        TuileEnPlus.setBounds(11 * x+10, 5 * x, x, x);
+        TuileEnPlus.setBounds(11 * x+17, 5 * x+10, x, x);
         TuileEnPlus.setLayout(new GridLayout(1, 1));
+        TuileEnPlus.setOpaque(false);
         TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
         layeredPane2.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
         BtnTourner.setPreferredSize(new Dimension(32, 32));
-        BtnTourner.setBounds(11 * x + 26, 6 * x, 32, 32);
+        BtnTourner.setBounds(11 * x + 36, 6 * x+10, 32, 32);
         BtnTourner.setLayout(new GridLayout(1, 1));
         JButton droite = new JButton();
+        BtnTourner.setOpaque(false);
+        droite.setOpaque(false);
+        droite.setContentAreaFilled(false);
+        droite.setBorderPainted(false);
         ActionListener ecouteurClick = new ActionListener() {
 
             @Override
