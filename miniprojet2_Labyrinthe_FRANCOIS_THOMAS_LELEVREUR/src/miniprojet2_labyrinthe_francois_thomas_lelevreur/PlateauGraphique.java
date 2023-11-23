@@ -36,7 +36,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
      */
     public PlateauGraphique() {
         initComponents();
-        this.plateau = new Plateau();
+        this.plateau = new Plateau(1);
         int x = 64;
         // Vous devez également déclarer y s'il n'est pas déjà déclaré.
 
@@ -132,6 +132,21 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 }
             });
     
+    }
+    public void defCarteObj(JLayeredPane layeredPane2, CarteObjectif[][] objectifs, int joueur,int x, int nbJoueur){
+       JPanel CarteObj = new JPanel();
+        if (nbJoueur==1 || nbJoueur==2){
+            CarteObj.setPreferredSize(new Dimension(384, 100));
+        CarteObj.setLayout(new GridLayout(6,2 ));
+        }
+        if (nbJoueur==3){
+        CarteObj.setPreferredSize(new Dimension(508, 100));
+        CarteObj.setLayout(new GridLayout(8,1 ));
+        }
+        if (nbJoueur==4){
+        CarteObj.setPreferredSize(new Dimension(384, 100));
+        CarteObj.setLayout(new GridLayout(6,1 ));
+        }
     }
     public void defBtnPousser(JLayeredPane layeredPane, JLayeredPane layeredPane2){
         int x=64;
