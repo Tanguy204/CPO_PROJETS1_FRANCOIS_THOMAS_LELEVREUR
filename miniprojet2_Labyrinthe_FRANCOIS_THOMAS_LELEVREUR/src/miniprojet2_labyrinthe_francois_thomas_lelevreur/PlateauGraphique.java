@@ -6,6 +6,7 @@ package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import java.awt.GridLayout;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -33,10 +35,14 @@ public class PlateauGraphique extends javax.swing.JFrame {
     JPanel TuileEnPlus;
     JPanel CarteObj;
     Image carrePointille;
-
+    JButton[] btnPousser;
+    JButton[] btnDeplacer;
+    JLayeredPane commandes;
     JLayeredPane layeredPane2;
     JLayeredPane layeredPane;
     JLayeredPane layeredPion;
+    JPanel clrJoueur;
+
     int tourDe;
     int nbJoueurs;
 
@@ -46,35 +52,40 @@ public class PlateauGraphique extends javax.swing.JFrame {
      * @param nbJoueurs
      */
     public PlateauGraphique(int nbJoueurs) {
+        btnPousser = new JButton[12];
+        btnDeplacer = new JButton[4];
         plateau = new Plateau(nbJoueurs);
-        for (int i = 0; i<7;i++){
-            for (int j = 0; j<7;j++){
-                System.out.println(plateau.Labyrinthe[i][j].CoteBas+" "+plateau.Labyrinthe[i][j].CoteGauche+" "+plateau.Labyrinthe[i][j].CoteHaut+" "+plateau.Labyrinthe[i][j].CoteDroit+"ligne"+i);
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                System.out.println(plateau.Labyrinthe[i][j].CoteBas + " " + plateau.Labyrinthe[i][j].CoteGauche + " " + plateau.Labyrinthe[i][j].CoteHaut + " " + plateau.Labyrinthe[i][j].CoteDroit + "ligne" + i);
             }
         }
         this.nbJoueurs = nbJoueurs;
-        layeredPion = new JLayeredPane() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\PlateauFondV2.jpg").getImage();
-                g.drawImage(image, 0, 0, getWidth(), getHeight(), (ImageObserver) this);
-            }
-        };
+
         initComponents();
         Random random = new Random();
         tourDe = random.nextInt(Math.abs(nbJoueurs));
-        
 
         int x = 64;
         // Vous devez également déclarer y s'il n'est pas déjà déclaré.
+        commandes = new JLayeredPane() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\fondCommandes.png").getImage();
+                g.drawImage(image, 0, 32, 9 * x, 9 * x + 32, (ImageObserver) this);
+            }
+        };
+        clrJoueur = new JPanel();
+        defCouleurJ();
+        commandes.setBounds(680, 0, x * 9 + 80, x * 9 + 80);
 
+        add(commandes);
         layeredPane = new JLayeredPane() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\PlateauFondV2.jpg").getImage();
-                g.drawImage(image, 0, 0, getWidth(), getHeight(), (ImageObserver) this);
+                g.setColor(Color.red);
             }
         };
 
@@ -91,7 +102,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         layeredPane.add(PlateauGrph, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
         // Réglez la taille du JLayeredPane en fonction de la taille du panneau
-        layeredPane.setBounds(2 * x, 2 * x, x * 7 + 20, x * 7 + 20);
+        layeredPane.setBounds(100, 100, x * 7 + 20, x * 7 + 20);
         add(layeredPane);
 
         // Le reste de votre code...
@@ -112,15 +123,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\PlateauFondV2.png").getImage();
-                g.drawImage(image, -60, -80, 1200, 902, (ImageObserver) this);
+                g.drawImage(image, -88, -108, 1200, 902, (ImageObserver) this);
             }
         };
         layeredPane2.setBounds(0, 0, 1200, 902);
         add(layeredPane2);
         defTuileEnPlus(layeredPane2);
         defBtnPousser(layeredPane, layeredPane2);
-        defCarteObj(layeredPane2, nbJoueurs);
+        defCarteObj();
         defPion();
+        defBtnValider();
+        afficherClassement();
 
     }
 
@@ -164,67 +177,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
     }
 
-    public void defCarteObj(JLayeredPane layeredPane2, int nbJoueur) {
-        JPanel montrer = new JPanel();
-        JButton MONTRER = new JButton();
-        montrer.setLayout(new GridLayout(1, 1));
-        montrer.setBounds(932, 564, 50, 50);
+    public void defCarteObj() {
+
+        // Rendez le JLabel transparent
         CarteObj = new JPanel();
-         int  l = 2 ; 
-        
-        
-        if (nbJoueur == 1 || nbJoueur == 2) {
-            CarteObj.setOpaque(false);
-            CarteObj.setLayout(new GridLayout(6, 2));
-            l=12;
-            
-            CarteObj.setBounds(832, 180, 200, 384);
-            for (int i = 0; i < 12; i++) {
-                CarteObj.add(plateau.objectifs[i][tourDe]);
-            }
-        }
-        if (nbJoueur == 3) {
+        int l = 2;
+        CarteObj.setLayout(new GridLayout(1, 1));
+        CarteObj.setBounds(152, 290, 64, 100);
 
-            CarteObj.setLayout(new GridLayout(8, 1));
-            CarteObj.setBounds(832, 180, 100, 512);
-            l=8;
-            for (int i = 0; i < 8; i++) {
-                CarteObj.add(plateau.objectifs[i][tourDe]);
-            }
-            
-        }
-        if (nbJoueur == 4) {
-            l=6;
-            CarteObj.setLayout(new GridLayout(6, 1));
-            CarteObj.setBounds(832, 180, 100, 384);
-            for (int i = 0; i < 6; i++) {
-                CarteObj.add(plateau.objectifs[i][tourDe]);
-            }
-        }
-        ActionListener montre = new ActionListener() {
+        CarteObj.add(plateau.Pions[tourDe].cartesObjs[plateau.Pions[tourDe].compt]);
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    
-                
-                    if (plateau.objectifs[0][tourDe].vision==false){
-                        for( int i = 0 ; i<plateau.objectifs.length;i++){
-                            plateau.objectifs[i][tourDe].MontrerCarte();
-                    }
-                    }else{
-                    for( int i = 0 ; i<plateau.objectifs.length;i++){
-                            plateau.objectifs[i][tourDe].CacherCarte();
-                            }
-
-                    repaint();
-
-                }
-                }
-            };
-        MONTRER.addActionListener(montre);
-        montrer.add(MONTRER);
-        layeredPane2.add(montrer, JLayeredPane.DEFAULT_LAYER);
-        layeredPane2.add(CarteObj, JLayeredPane.DEFAULT_LAYER);
+        commandes.add(CarteObj, JLayeredPane.DEFAULT_LAYER);
     }
 
     public void defBtnPousser(JLayeredPane layeredPane, JLayeredPane layeredPane2) {
@@ -246,13 +209,19 @@ public class PlateauGraphique extends javax.swing.JFrame {
             int imp = (2 * k) + 1;
 
             JButton pousse = new JButton();
+            btnPousser[k] = pousse;
             ActionListener ecouteur = new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     plateau.PousserColonneB(imp);
                     Actualiser(layeredPane, layeredPane2);
-                    
+                    for (int i = 0; i < 12; i++) {
+                        btnPousser[i].setEnabled(false);
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        btnDeplacer[i].setEnabled(true);
+                    }
 
                     repaint();
 
@@ -266,7 +235,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             boutonSurvole(pousse);
 
             BoutonsPousser[k].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k].setBounds(138 + imp * x, x, x, x);
+            BoutonsPousser[k].setBounds(110 + imp * x, 36, x, x);
             BoutonsPousser[k].add(pousse);
             layeredPane2.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
         }
@@ -275,10 +244,16 @@ public class PlateauGraphique extends javax.swing.JFrame {
             int imp = (2 * k) + 1;
 
             JButton pousse = new JButton();
+            btnPousser[k + 3] = pousse;
             ActionListener ecouteur = (ActionEvent e) -> {
                 plateau.PousserLigneD(imp);
                 Actualiser(layeredPane, layeredPane2);
-
+                for (int i = 0; i < 12; i++) {
+                    btnPousser[i].setEnabled(false);
+                }
+                for (int i = 0; i < 4; i++) {
+                    btnDeplacer[i].setEnabled(true);
+                }
                 repaint();
             };
 
@@ -290,7 +265,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             boutonSurvole(pousse);
 
             BoutonsPousser[k + 3].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k + 3].setBounds(x, 138 + imp * x, x, x);
+            BoutonsPousser[k + 3].setBounds(36, 110 + imp * x, x, x);
             BoutonsPousser[k + 3].add(pousse);
             layeredPane2.add(BoutonsPousser[k + 3], JLayeredPane.DEFAULT_LAYER);
 
@@ -300,10 +275,16 @@ public class PlateauGraphique extends javax.swing.JFrame {
             int imp = (2 * k) + 1;
 
             JButton pousse = new JButton();
+            btnPousser[k + 6] = pousse;
             ActionListener ecouteur = (ActionEvent e) -> {
                 plateau.PousserLigneG(imp);
                 Actualiser(layeredPane, layeredPane2);
-
+                for (int i = 0; i < 12; i++) {
+                    btnPousser[i].setEnabled(false);
+                }
+                for (int i = 0; i < 4; i++) {
+                    btnDeplacer[i].setEnabled(true);
+                }
                 repaint();
             };
 
@@ -315,7 +296,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             boutonSurvole(pousse);
 
             BoutonsPousser[k + 6].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k + 6].setBounds(9 * x + 20, 138 + imp * x, x, x);
+            BoutonsPousser[k + 6].setBounds(9 * x - 8, 110 + imp * x, x, x);
             BoutonsPousser[k + 6].add(pousse);
             layeredPane2.add(BoutonsPousser[k + 6], JLayeredPane.DEFAULT_LAYER);
 
@@ -325,11 +306,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
             int imp = (2 * k) + 1;
 
             JButton pousse = new JButton();
+            btnPousser[k + 9] = pousse;
 
             ActionListener ecouteur = (ActionEvent e) -> {
                 plateau.PousserColonneH(imp);
                 Actualiser(layeredPane, layeredPane2);
-
+                for (int i = 0; i < 12; i++) {
+                    btnPousser[i].setEnabled(false);
+                }
+                for (int i = 0; i < 4; i++) {
+                    btnDeplacer[i].setEnabled(true);
+                }
                 repaint();
             };
 
@@ -341,7 +328,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             boutonSurvole(pousse);
 
             BoutonsPousser[k + 9].setPreferredSize(new Dimension(x, x));
-            BoutonsPousser[k + 9].setBounds(138 + imp * x, 9 * x + 20, x, x);
+            BoutonsPousser[k + 9].setBounds(110 + imp * x, 9 * x - 8, x, x);
             BoutonsPousser[k + 9].add(pousse);
             layeredPane2.add(BoutonsPousser[k + 9], JLayeredPane.DEFAULT_LAYER);
 
@@ -356,20 +343,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
         TuileEnPlus = new JPanel();
 
         TuileEnPlus.setPreferredSize(new Dimension(x, x));
-        TuileEnPlus.setBounds(11 * x + 17, 5 * x + 10, x, x);
+        TuileEnPlus.setBounds(30, 275, x, x);
         TuileEnPlus.setLayout(new GridLayout(1, 1));
         TuileEnPlus.setOpaque(false);
         TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
-        layeredPane2.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        commandes.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
-        BtnTourner.setPreferredSize(new Dimension(32, 32));
-        BtnTourner.setBounds(11 * x + 36, 6 * x + 10, 32, 32);
+        BtnTourner.setBounds(42, 350, 40, 40);
         BtnTourner.setLayout(new GridLayout(1, 1));
         JButton droite = new JButton();
         BtnTourner.setOpaque(false);
-        droite.setOpaque(false);
-        droite.setContentAreaFilled(false);
-        droite.setBorderPainted(false);
+
         ActionListener ecouteurClick = new ActionListener() {
 
             @Override
@@ -382,14 +366,14 @@ public class PlateauGraphique extends javax.swing.JFrame {
         };
         droite.addActionListener(ecouteurClick);
         BtnTourner.add(droite);
-        layeredPane2.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        commandes.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
     }
 
     public void defPion() {
 
-        for (int n = 0; n<nbJoueurs;n++){
-        layeredPane.add(plateau.Pions[n], JLayeredPane.PALETTE_LAYER);
+        for (int n = 0; n < nbJoueurs; n++) {
+            layeredPane.add(plateau.Pions[n], JLayeredPane.PALETTE_LAYER);
         }
         JPanel BoutonsY = new JPanel();
         BoutonsY.setLayout(new GridLayout(2, 1));
@@ -404,11 +388,11 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 layeredPane.add(plateau.Pions[tourDe], JLayeredPane.PALETTE_LAYER);
 
                 repaint();
-                for (int i = 0; i<7;i++){
-            for (int j = 0; j<7;j++){
-                System.out.println(plateau.Labyrinthe[i][j].CoteBas+" "+plateau.Labyrinthe[i][j].CoteGauche+" "+plateau.Labyrinthe[i][j].CoteHaut+" "+plateau.Labyrinthe[i][j].CoteDroit+"ligne"+i);
-            }
-        }
+                for (int i = 0; i < 7; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        System.out.println(plateau.Labyrinthe[i][j].CoteBas + " " + plateau.Labyrinthe[i][j].CoteGauche + " " + plateau.Labyrinthe[i][j].CoteHaut + " " + plateau.Labyrinthe[i][j].CoteDroit + "ligne" + i);
+                    }
+                }
 
             }
         };
@@ -424,18 +408,18 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 layeredPane.add(plateau.Pions[tourDe], JLayeredPane.PALETTE_LAYER);
 
                 repaint();
-                for (int i = 0; i<7;i++){
-            for (int j = 0; j<7;j++){
-                System.out.println(plateau.Labyrinthe[i][j].CoteBas+" "+plateau.Labyrinthe[i][j].CoteGauche+" "+plateau.Labyrinthe[i][j].CoteHaut+" "+plateau.Labyrinthe[i][j].CoteDroit+"ligne"+i);
-            }
-        }
+                for (int i = 0; i < 7; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        System.out.println(plateau.Labyrinthe[i][j].CoteBas + " " + plateau.Labyrinthe[i][j].CoteGauche + " " + plateau.Labyrinthe[i][j].CoteHaut + " " + plateau.Labyrinthe[i][j].CoteDroit + "ligne" + i);
+                    }
+                }
 
             }
         };
         btnDesc.addActionListener(Descendre);
 
-        BoutonsY.setBounds(750, 500, 40, 80);
-        
+        BoutonsY.setBounds(102, 500, 40, 80);
+
         BoutonsY.add(btnMonte);
         BoutonsY.add(btnDesc);
         JPanel btnDroit = new JPanel();
@@ -451,13 +435,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 layeredPane.add(plateau.Pions[tourDe], JLayeredPane.PALETTE_LAYER);
 
                 repaint();
-                
-        }
-                 };
+
+            }
+        };
         JbtnDroit.addActionListener(droite);
         btnDroit.add(JbtnDroit);
-        btnDroit.setBounds(790, 540, 40, 40);
-        
+        btnDroit.setBounds(142, 540, 40, 40);
+
         JPanel btnGauche = new JPanel();
         btnGauche.setLayout(new GridLayout(1, 1));
         JButton JbtnGauche = new JButton();
@@ -471,18 +455,110 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 layeredPane.add(plateau.Pions[tourDe], JLayeredPane.PALETTE_LAYER);
 
                 repaint();
-                
-        }
-                 };
+
+            }
+        };
         JbtnGauche.addActionListener(gauche);
         btnGauche.add(JbtnGauche);
-        btnGauche.setBounds(710, 540, 40, 40);
-        
+        btnGauche.setBounds(62, 540, 40, 40);
 
-        layeredPane2.add(BoutonsY, JLayeredPane.DEFAULT_LAYER);
-        layeredPane2.add(btnDroit, JLayeredPane.DEFAULT_LAYER);// Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
-        layeredPane2.add(btnGauche, JLayeredPane.DEFAULT_LAYER);// Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        commandes.add(BoutonsY, JLayeredPane.DEFAULT_LAYER);
+        commandes.add(btnDroit, JLayeredPane.DEFAULT_LAYER);// Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        commandes.add(btnGauche, JLayeredPane.DEFAULT_LAYER);// Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        btnDeplacer[0] = JbtnGauche;
+        btnDeplacer[1] = JbtnDroit;
+        btnDeplacer[2] = btnDesc;
+        btnDeplacer[3] = btnMonte;
+        for (int i = 0; i < 4; i++) {
+            btnDeplacer[i].setEnabled(false);
+        }
+    }
 
+    public void defBtnValider() {
+        JPanel BoutonValider = new JPanel();
+        BoutonValider.setBounds(62, 580, 120, 40);
+        BoutonValider.setLayout(new GridLayout(1, 1));
+        JButton btnValide = new JButton();
+        ActionListener valider = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                CarteObjectif carte = plateau.Pions[tourDe].cartesObjs[plateau.Pions[tourDe].compt];
+                carte.CarteValide(plateau.Labyrinthe[plateau.Pions[tourDe].x][plateau.Pions[tourDe].y]);
+                if (carte.Valide == true) {
+                    plateau.Pions[tourDe].compt += 1;
+
+                }
+                if (tourDe == nbJoueurs - 1) {
+                    tourDe = 0;
+                } else {
+                    tourDe += 1;
+                }
+                for (int i = 0; i < 12; i++) {
+                    btnPousser[i].setEnabled(true);
+                }
+                for (int i = 0; i < 4; i++) {
+                    btnDeplacer[i].setEnabled(false);
+                }
+                commandes.remove(CarteObj);
+                defCarteObj();
+
+                defCouleurJ();
+                afficherClassement();
+
+                repaint();
+
+            }
+        };
+        btnValide.addActionListener(valider);
+        BoutonValider.add(btnValide);
+        labPousser.setBounds(20, 424, 400, 20);
+        commandes.add(labPousser, JLayeredPane.DEFAULT_LAYER);
+        commandes.add(BoutonValider, JLayeredPane.DEFAULT_LAYER);
+
+    }
+
+    public void defCouleurJ() {
+        commandes.remove(clrJoueur);
+        if (plateau.Pions[tourDe].clr == "R") {
+            clrJoueur.setBackground(Color.red);
+
+        }
+        if (plateau.Pions[tourDe].clr == "J") {
+            clrJoueur.setBackground(Color.YELLOW);
+
+        }
+        if (plateau.Pions[tourDe].clr == "V") {
+            clrJoueur.setBackground(Color.green);
+
+        }
+        if (plateau.Pions[tourDe].clr == "B") {
+            clrJoueur.setBackground(Color.blue);
+
+        }
+        clrJoueur.setBounds(10, 41, 224, 17);
+        commandes.remove(clrJoueur);
+        commandes.add(clrJoueur, JLayeredPane.DEFAULT_LAYER);
+
+    }
+
+    public void afficherClassement() {
+        plateau.classement();
+        for (int i = 0; i < nbJoueurs; i++) {
+            for (int j = 0; j < nbJoueurs; j++) {
+                if (plateau.classement[i][j] != null) {
+                    plateau.classement[i][j].pionPodium.setBounds(90 + j * 65, i * 40 + 95, 25, 25);
+                    commandes.add(plateau.classement[i][j].pionPodium, JLayeredPane.PALETTE_LAYER);
+                    plateau.classement[i][j].Score.setText(String.valueOf(plateau.classement[i][j].compt) + " pts");
+                    plateau.classement[i][j].Score.setBounds(115 + j * 65, i * 40 + 90, 50, 20);
+                    Font policeAgrandie = new Font(plateau.classement[i][j].Score.getFont().getName(), Font.PLAIN, 10);
+                    commandes.remove(plateau.classement[i][j].Score);
+                    plateau.classement[i][j].Score.setFont(policeAgrandie);
+                    commandes.add(plateau.classement[i][j].Score, JLayeredPane.DEFAULT_LAYER);
+                }
+            }
+        }
     }
 
     /**
@@ -495,6 +571,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
     private void initComponents() {
 
         BtnTourner = new javax.swing.JPanel();
+        labPousser = new javax.swing.JLabel();
+        labValider = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -509,20 +587,37 @@ public class PlateauGraphique extends javax.swing.JFrame {
             .addGap(0, 54, Short.MAX_VALUE)
         );
 
+        labPousser.setText("¤ Pousse une ligne ou colonne avec la tuile en plus.");
+        labPousser.setBounds(60,500,40,20);
+
+        labValider.setText("¤ Rapproche toi jusqu'à l'objet, et valide quand tu a finis ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(636, Short.MAX_VALUE)
+                .addContainerGap(151, Short.MAX_VALUE)
+                .addComponent(labValider, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(179, 179, 179))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(321, 321, 321)
+                .addComponent(labPousser, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(137, 137, 137)
-                .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(109, 109, 109)
+                .addComponent(labPousser)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(labValider)))
                 .addContainerGap(383, Short.MAX_VALUE))
         );
 
@@ -558,11 +653,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new PlateauGraphique(3).setVisible(true);
+            new PlateauGraphique(2).setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BtnTourner;
+    private javax.swing.JLabel labPousser;
+    private javax.swing.JLabel labValider;
     // End of variables declaration//GEN-END:variables
 }
