@@ -20,44 +20,52 @@ import javax.swing.JPanel;
  * @author Tanguy
  */
 public class FenetreAccueil extends javax.swing.JFrame {
+
     JPanel btnJouers;
+
     /**
      * Creates new form FenetreAccueil
      */
     public FenetreAccueil() {
+
         initComponents();
-        JLayeredPane layeredPane = new JLayeredPane(){
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\plateauFod.jpg").getImage();
-                    g.drawImage(image, 0, 0, getWidth(), getHeight(), (ImageObserver) this);
-                }
-            };
+        Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\accueil.png").getImage();
+        Image imageRedimenssionne = image.getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
+
+        Image imageADessiner = new ImageIcon(imageRedimenssionne).getImage();
+        JLayeredPane layeredPane = new JLayeredPane() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(imageADessiner, 0, 0, 640, 640, (ImageObserver) this);
+            }
+        };
         layeredPane.setBounds(0, 0, 1200, 1200);
         add(layeredPane);
-        btnJouers = new JPanel();
-        btnJouers.setOpaque(false);
-        btnJouers.setLayout(new GridLayout(4, 1));// Les valeurs RGB pour le bleu marine peuvent varier
-        
-        btnJouers.setBounds(550, 550, 100, 160);
-        layeredPane.add(btnJouers);
-        for (int h =0 ; h<4;h++){
-            
-        
-       JButton UnJoueur = new JButton();
-        int c = h +1;
-            ActionListener ecouteur = new ActionListener() {
 
+        
+            int y = 87;
+            btnJouers = new JPanel();
+            
+            btnJouers.setLayout(new GridLayout(1, 1));// Les valeurs RGB pour le bleu marine peuvent varier
+
+            btnJouers.setBounds(205, 225 +  y, 210, 40);
+            
+
+            JButton UnJoueur = new JButton();
+            btnJouers.setOpaque(false);
+            
+
+            UnJoueur.setBounds(0, 0, 200, 100);
+           
+            ActionListener ecouteur = new ActionListener() {
+            
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                   
-                    
-            new PlateauGraphique(c).setVisible(true);
-       
-                    
-                setVisible(false);
-            
+
+                    new PlateauGraphique(1).setVisible(true);
+
+                    setVisible(false);
 
                     repaint();
 
@@ -65,8 +73,51 @@ public class FenetreAccueil extends javax.swing.JFrame {
             };
             UnJoueur.addActionListener(ecouteur);
             btnJouers.add(UnJoueur);
+            JButton DeuxJoueurs = new JButton();
+            btnJouers.setOpaque(false);
+            
+
+            DeuxJoueurs.setBounds(0, 0, 200+y, 100);
+           
+            ActionListener deuxjoueurs = new ActionListener() {
+            
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    new PlateauGraphique(2).setVisible(true);
+
+                    setVisible(false);
+
+                    repaint();
+
+                }
+            };
+            DeuxJoueurs.addActionListener(deuxjoueurs);
+            btnJouers.add(DeuxJoueurs);
+            JButton TroisJoueur = new JButton();
+            btnJouers.setOpaque(false);
+            
+
+            TroisJoueur.setBounds(0, 0, 200+2*y, 100);
+           
+            ActionListener troisjoueurs = new ActionListener() {
+            
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    new PlateauGraphique(3).setVisible(true);
+
+                    setVisible(false);
+
+                    repaint();
+
+                }
+            };
+            TroisJoueur.addActionListener(troisjoueurs);
+            btnJouers.add(TroisJoueur);
+            layeredPane.add(btnJouers);
         }
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

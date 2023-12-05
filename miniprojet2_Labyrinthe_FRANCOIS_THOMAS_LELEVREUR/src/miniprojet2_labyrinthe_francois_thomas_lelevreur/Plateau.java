@@ -209,15 +209,17 @@ public final class Plateau {
         ArrayList<TuileCouloir> PileDeTuiles = new ArrayList<>();
         ArrayList<CarteObjectif> PileDeCartes = new ArrayList<>();
         Labyrinthe = new TuileCouloir[7][7];
-        Pions[0]= new Pion("J")   ;
+        Pions[0]= new Pion("J",Labyrinthe)   ;
+        
         if (nbJoueurs>1){
-        Pions[1]= new Pion("B" )   ;
+            
+        Pions[1]= new Pion("B",Labyrinthe)   ;
         }
         if (nbJoueurs>2){
-    Pions[2]= new Pion("V" )   ;
+    Pions[2]= new Pion("V",Labyrinthe )   ;
         }
     if (nbJoueurs>3){
-    Pions[3]= new Pion("R" )   ;
+    Pions[3]= new Pion("R",Labyrinthe )   ;
     }
     
         Labyrinthe[6][0] = new TuileCouloir(false, true, true, false, null, "C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\tuile2.png");
@@ -291,14 +293,14 @@ public final class Plateau {
             Collections.shuffle(PileDeTuiles);
         }
         if (nbJoueurs==1){
-            objectifs=new CarteObjectif[12][1];
+            
             Pions[0].cartesObjs = new CarteObjectif[12];
             for (int p = 0;p<12;p++){
                 
-                objectifs[p][0]=PileDeCartes.get(1);
+                
                 Pions[0].cartesObjs[p]= PileDeCartes.get(1);
-                PileDeCartes.remove(objectifs[p][0]);
-                objectifs[p][0].proprietaire = Pions[0];
+                PileDeCartes.remove(Pions[0].cartesObjs[p]);
+                
                 
             }
             
@@ -306,41 +308,41 @@ public final class Plateau {
         
         if (nbJoueurs==2){
             
-            objectifs=new CarteObjectif[12][2];
+            
             for (int i = 0;i<2;i++){
                 Pions[i].cartesObjs = new CarteObjectif[12];
                 for (int j = 0;j<12;j++){
                     
-                objectifs[j][i]=PileDeCartes.get(0);
-                Pions[i].cartesObjs[i] = PileDeCartes.get(0);
-                PileDeCartes.remove(objectifs[j][i]);
-                objectifs[j][i].proprietaire = Pions[i];
+                
+                Pions[i].cartesObjs[j] = PileDeCartes.get(0);
+                PileDeCartes.remove(Pions[i].cartesObjs[i]);
+                
                 
                 
             }
         }
         }
         if (nbJoueurs==3){
-            objectifs=new CarteObjectif[8][3];
+            
             for (int i = 0;i<3;i++){
                 Pions[i].cartesObjs = new CarteObjectif[8];
                 for (int j = 0;j<8;j++){
                 Pions[i].cartesObjs[j] = PileDeCartes.get(0);
-                objectifs[j][i]=PileDeCartes.get(0);
-                PileDeCartes.remove(objectifs[j][i]);
-                objectifs[j][i].proprietaire = Pions[i];
+                
+                PileDeCartes.remove(Pions[i].cartesObjs[j]);
+               
             }
         }
         }
         if (nbJoueurs==4){
-            objectifs=new CarteObjectif[6][4];
+            
             for (int i = 0;i<4;i++){
                 Pions[i].cartesObjs = new CarteObjectif[6];
                 for (int j = 0;j<6;j++){
-                Pions[i].cartesObjs[i] = PileDeCartes.get(0);    
-                objectifs[j][i]=PileDeCartes.get(0);
-                PileDeCartes.remove(objectifs[j][i]);
-                objectifs[j][i].proprietaire = Pions[i];
+                Pions[i].cartesObjs[j] = PileDeCartes.get(0);    
+                
+                PileDeCartes.remove(Pions[i].cartesObjs[j]);
+                
             }
         }
         }
@@ -414,7 +416,7 @@ public void classement() {
         exaequo =false;
         for (int j = 1; j<(nbJoueurs+1); j++) {
             int k=nbJoueurs-j;
-            System.out.println("j"+k+"i"+i+"d"+nbJoueurs);
+            
             if (pionBis[i].compt==pionBis[k].compt ){
                 System.out.println("j"+j);
                 int Qcol=0;

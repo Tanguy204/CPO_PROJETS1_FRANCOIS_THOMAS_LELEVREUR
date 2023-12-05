@@ -11,6 +11,7 @@ import java.awt.Graphics;
 
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -42,6 +44,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
     JLayeredPane layeredPane;
     JLayeredPane layeredPion;
     JPanel clrJoueur;
+    JLabel instruction;
+
 
     int tourDe;
     int nbJoueurs;
@@ -52,6 +56,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
      * @param nbJoueurs
      */
     public PlateauGraphique(int nbJoueurs) {
+        initComponents();
+        setPreferredSize(new Dimension(1000, 700));
+        
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+        Dimension screenSize = toolkit.getScreenSize();
+        int L = (int) screenSize.getWidth();
+        int H = (int) screenSize.getHeight();
+        setLocation((L-1000)/2, (H-700)/2);
+        
+        
         btnPousser = new JButton[12];
         btnDeplacer = new JButton[4];
         plateau = new Plateau(nbJoueurs);
@@ -62,7 +77,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         }
         this.nbJoueurs = nbJoueurs;
 
-        initComponents();
+        
         Random random = new Random();
         tourDe = random.nextInt(Math.abs(nbJoueurs));
 
@@ -134,6 +149,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         defPion();
         defBtnValider();
         afficherClassement();
+        defInstruction("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\déplacerPion.png");
 
     }
 
@@ -238,6 +254,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             BoutonsPousser[k].setBounds(110 + imp * x, 36, x, x);
             BoutonsPousser[k].add(pousse);
             layeredPane2.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
+            
         }
         for (int k = 0; k < 3; k++) {
 
@@ -348,10 +365,22 @@ public class PlateauGraphique extends javax.swing.JFrame {
         TuileEnPlus.setOpaque(false);
         TuileEnPlus.add(plateau.TuilePoussoire.Tuile);
         commandes.add(TuileEnPlus, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
-
+        JPanel BtnTourner = new JPanel();
         BtnTourner.setBounds(42, 350, 40, 40);
         BtnTourner.setLayout(new GridLayout(1, 1));
         JButton droite = new JButton();
+         ImageIcon imageIcon;
+
+        imageIcon = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\tournerCarte.png");
+
+        ImageIcon imageRedimenssionne = new ImageIcon( imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        
+        
+        
+        droite.setIcon(imageRedimenssionne);
+        droite.setOpaque(false);
+            droite.setContentAreaFilled(false);
+            droite.setBorderPainted(false);
         BtnTourner.setOpaque(false);
 
         ActionListener ecouteurClick = new ActionListener() {
@@ -366,20 +395,34 @@ public class PlateauGraphique extends javax.swing.JFrame {
         };
         droite.addActionListener(ecouteurClick);
         BtnTourner.add(droite);
-        commandes.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
+        commandes.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); 
 
     }
 
     public void defPion() {
-
+        ImageIcon[] Images = new ImageIcon[4];
+        ImageIcon Haut= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\haut.png");
+        ImageIcon haut= new ImageIcon( Haut.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Bas= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\bas.png");
+        ImageIcon bas= new ImageIcon( Bas.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Gauche= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\gauche.png");
+        ImageIcon GAUCHE= new ImageIcon( Gauche.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Droite= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\droite.png");
+        ImageIcon DROITE= new ImageIcon( Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         for (int n = 0; n < nbJoueurs; n++) {
             layeredPane.add(plateau.Pions[n], JLayeredPane.PALETTE_LAYER);
         }
         JPanel BoutonsY = new JPanel();
+        BoutonsY.setOpaque(false);
         BoutonsY.setLayout(new GridLayout(2, 1));
         JButton btnMonte = new JButton();
+        btnMonte.setIcon(haut);
+        btnMonte.setOpaque(false);
+            btnMonte.setContentAreaFilled(false);
+            btnMonte.setBorderPainted(false);
+        
         ActionListener Monte = new ActionListener() {
-
+        
             @Override
             public void actionPerformed(ActionEvent e) {
                 plateau.avancerHaut(plateau.Pions[tourDe]);
@@ -398,6 +441,10 @@ public class PlateauGraphique extends javax.swing.JFrame {
         };
         btnMonte.addActionListener(Monte);
         JButton btnDesc = new JButton();
+        btnDesc.setIcon(bas);
+        btnDesc.setOpaque(false);
+            btnDesc.setContentAreaFilled(false);
+            btnDesc.setBorderPainted(false);
         ActionListener Descendre = new ActionListener() {
 
             @Override
@@ -423,8 +470,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
         BoutonsY.add(btnMonte);
         BoutonsY.add(btnDesc);
         JPanel btnDroit = new JPanel();
+        btnDroit.setOpaque(false);
         btnDroit.setLayout(new GridLayout(1, 1));
         JButton JbtnDroit = new JButton();
+        JbtnDroit.setIcon(DROITE);
+        JbtnDroit.setOpaque(false);
+            JbtnDroit.setContentAreaFilled(false);
+            JbtnDroit.setBorderPainted(false);
         ActionListener droite = new ActionListener() {
 
             @Override
@@ -443,8 +495,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
         btnDroit.setBounds(142, 540, 40, 40);
 
         JPanel btnGauche = new JPanel();
+        btnGauche.setOpaque(false);
         btnGauche.setLayout(new GridLayout(1, 1));
         JButton JbtnGauche = new JButton();
+        JbtnGauche.setOpaque(false);
+            JbtnGauche.setContentAreaFilled(false);
+            JbtnGauche.setBorderPainted(false);
+        JbtnGauche.setIcon(GAUCHE);
         ActionListener gauche = new ActionListener() {
 
             @Override
@@ -476,20 +533,28 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
     public void defBtnValider() {
         JPanel BoutonValider = new JPanel();
+        BoutonValider.setOpaque(false);
         BoutonValider.setBounds(62, 580, 120, 40);
         BoutonValider.setLayout(new GridLayout(1, 1));
         JButton btnValide = new JButton();
-        ActionListener valider = new ActionListener() {
-
+        ImageIcon Droite= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\valider.png");
+        ImageIcon DROITE= new ImageIcon( Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        btnValide.setIcon(DROITE);
+        btnValide.setOpaque(false);
+            btnValide.setContentAreaFilled(false);
+            btnValide.setBorderPainted(false);
+        ActionListener valider;
+        valider = new ActionListener() {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                CarteObjectif carte = plateau.Pions[tourDe].cartesObjs[plateau.Pions[tourDe].compt];
-                carte.CarteValide(plateau.Labyrinthe[plateau.Pions[tourDe].x][plateau.Pions[tourDe].y]);
-                if (carte.Valide == true) {
-                    plateau.Pions[tourDe].compt += 1;
-
+                plateau.Pions[tourDe].CarteValide();
+                afficherClassement();
+                if (plateau.Pions[tourDe].gagné()==true){
+                    new fenetreGagné(plateau.classement).setVisible(true);
                 }
+               
                 if (tourDe == nbJoueurs - 1) {
                     tourDe = 0;
                 } else {
@@ -501,20 +566,23 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 for (int i = 0; i < 4; i++) {
                     btnDeplacer[i].setEnabled(false);
                 }
+                plateau.Pions[tourDe].CarteValide();
                 commandes.remove(CarteObj);
                 defCarteObj();
 
                 defCouleurJ();
-                afficherClassement();
-
+                
+                
+                
+                
+                
                 repaint();
 
             }
         };
         btnValide.addActionListener(valider);
         BoutonValider.add(btnValide);
-        labPousser.setBounds(20, 424, 400, 20);
-        commandes.add(labPousser, JLayeredPane.DEFAULT_LAYER);
+        
         commandes.add(BoutonValider, JLayeredPane.DEFAULT_LAYER);
 
     }
@@ -560,6 +628,25 @@ public class PlateauGraphique extends javax.swing.JFrame {
             }
         }
     }
+        public void defInstruction(String Chemin ){
+        ImageIcon imageIcon;
+
+        imageIcon = new ImageIcon(Chemin);
+
+        Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(227, 40, Image.SCALE_SMOOTH);
+
+        ImageIcon imageADessiner = new ImageIcon(imageRedimenssionne);
+    
+        instruction =new JLabel();
+        instruction.setIcon(imageADessiner);
+        
+        instruction.setBounds(10,420,227,40);
+        
+       
+        commandes.add(instruction, JLayeredPane.DEFAULT_LAYER);
+    repaint();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -570,55 +657,17 @@ public class PlateauGraphique extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BtnTourner = new javax.swing.JPanel();
-        labPousser = new javax.swing.JLabel();
-        labValider = new javax.swing.JLabel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout BtnTournerLayout = new javax.swing.GroupLayout(BtnTourner);
-        BtnTourner.setLayout(BtnTournerLayout);
-        BtnTournerLayout.setHorizontalGroup(
-            BtnTournerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 83, Short.MAX_VALUE)
-        );
-        BtnTournerLayout.setVerticalGroup(
-            BtnTournerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 54, Short.MAX_VALUE)
-        );
-
-        labPousser.setText("¤ Pousse une ligne ou colonne avec la tuile en plus.");
-        labPousser.setBounds(60,500,40,20);
-
-        labValider.setText("¤ Rapproche toi jusqu'à l'objet, et valide quand tu a finis ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(151, Short.MAX_VALUE)
-                .addComponent(labValider, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(179, 179, 179))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(321, 321, 321)
-                .addComponent(labPousser, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 898, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(109, 109, 109)
-                .addComponent(labPousser)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnTourner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(labValider)))
-                .addContainerGap(383, Short.MAX_VALUE))
+            .addGap(0, 574, Short.MAX_VALUE)
         );
 
         pack();
@@ -653,13 +702,15 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new PlateauGraphique(2).setVisible(true);
+            new PlateauGraphique(4).setVisible(true);
         });
     }
 
+    private void setContentAreaFilled(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel BtnTourner;
-    private javax.swing.JLabel labPousser;
-    private javax.swing.JLabel labValider;
     // End of variables declaration//GEN-END:variables
 }

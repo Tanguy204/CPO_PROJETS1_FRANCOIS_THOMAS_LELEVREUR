@@ -15,7 +15,7 @@ public class Miniprojet2_Labyrinthe_FRANCOIS_THOMAS_LELEVREUR {
      */
     public static void main(String[] args) {
         
-        Plateau Plateautest= new Plateau();
+        
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -21,17 +22,32 @@ public class Pion extends JLabel {
     int x;
     int a ; 
     int b;
-    int carteValidées;
+    TuileCouloir[][] Labyrinthe;
     CarteObjectif[] cartesObjs;
     boolean gagné;
+    int compt;
+    Rond pionPodium;
+    Rond pionClassement;
+    JLabel Score;
+    
+    
     
     
     String clr;
     
-    public Pion(String Clr ){
-       carteValidées=0;
+    public Pion(String Clr,TuileCouloir[][] Lab){
+        Labyrinthe=Lab;
         
+        compt=0;
+        String POINTS = String.valueOf(compt);
+       
+        // Création d'un JLabel avec le texte converti
+        Score = new JLabel(POINTS+" PTS");
+        pionClassement=new Rond(Clr);
+        pionPodium=new Rond(Clr);
         clr=Clr;
+        
+        
         
         gagné = false;
         if (Clr=="J"){
@@ -70,6 +86,17 @@ public class Pion extends JLabel {
      public void actualiser(){
         this.setBounds(64*(y)+32+a,64*(x)+32+b, 25, 25);
     }
+     
+     public void CarteValide(){
+    if (cartesObjs[compt].item==Labyrinthe[x][y].Item ){
+        cartesObjs[compt].Valide= true;
+        compt+=1;
+    }
+     }
+    public int getCompt() {
+        return compt;
+    }
+
     
     @Override
    
@@ -95,20 +122,16 @@ public class Pion extends JLabel {
         }
         g.fillOval(3, 1, w - 4, h - 4);
     }
-    
-public boolean compteCarteV(){
-    int t = 0;
-    while(cartesObjs[t].Valide == true  ){
-        
-            
-        
-        t+=1;
-        if (t==cartesObjs.length){
-            return true;
-        }
+    public boolean gagné(){
+        if (compt==1){
+            return true ;
+        } 
+        return false;
     }
-    return false;
-}  
+  
 
     
-}
+        }
+
+    
+
