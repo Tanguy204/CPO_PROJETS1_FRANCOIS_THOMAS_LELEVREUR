@@ -29,7 +29,7 @@ public class FenetreAccueil extends javax.swing.JFrame {
     public FenetreAccueil() {
 
         initComponents();
-        Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\accueil.png").getImage();
+        Image image = new ImageIcon(getClass().getResource("/images/accueil.png")).getImage();
         Image imageRedimenssionne = image.getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
 
         Image imageADessiner = new ImageIcon(imageRedimenssionne).getImage();

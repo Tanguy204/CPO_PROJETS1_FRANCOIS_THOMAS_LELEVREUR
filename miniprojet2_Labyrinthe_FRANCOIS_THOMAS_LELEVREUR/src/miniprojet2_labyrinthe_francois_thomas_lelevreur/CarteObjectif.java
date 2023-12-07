@@ -24,7 +24,7 @@ public class CarteObjectif extends JButton  {
     Plateau plateau;
     Pion proprietaire;
     String Chemin;
-    ImageIcon imageADessiner;
+    Image imageADessiner;
     boolean Valide;
     ImageIcon imagededos;
     boolean vision;
@@ -35,17 +35,13 @@ public class CarteObjectif extends JButton  {
         repaint();
         ImageIcon imageIcon;
 
-        imageIcon = new ImageIcon(Chemin);
+        imageIcon = new ImageIcon(getClass().getResource(Chemin));
 
         Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(64, 100, Image.SCALE_SMOOTH);
-        imageADessiner = new ImageIcon(imageRedimenssionne);
+        imageADessiner = new ImageIcon(imageRedimenssionne).getImage();
         
         
-        ImageIcon imageDeBase = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\dosCarte.png");
-
-        Image newimage = imageDeBase.getImage().getScaledInstance(64, 100, Image.SCALE_SMOOTH);
-        imagededos = new ImageIcon(newimage);
-        setIcon(imageADessiner);
+        
         
         
         
@@ -53,13 +49,12 @@ public class CarteObjectif extends JButton  {
 
    
     
-    
-    public void MontrerCarte(){
-        setIcon(imageADessiner);
-        vision = true;
-    }
-    public void CacherCarte(){
-        setIcon(imagededos);
-        vision = false;
+ 
+    @Override
+    protected void paintComponent(Graphics g) {
+
+
+        g.drawImage(imageADessiner, 0, 0, this);
+
     }
 }

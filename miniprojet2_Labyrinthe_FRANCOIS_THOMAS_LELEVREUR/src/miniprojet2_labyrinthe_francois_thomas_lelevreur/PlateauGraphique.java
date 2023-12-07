@@ -22,6 +22,7 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -57,14 +58,16 @@ public class PlateauGraphique extends javax.swing.JFrame {
      */
     public PlateauGraphique(int nbJoueurs) {
         initComponents();
-        setPreferredSize(new Dimension(1000, 700));
+        
         
         Toolkit toolkit = Toolkit.getDefaultToolkit();
 
         Dimension screenSize = toolkit.getScreenSize();
         int L = (int) screenSize.getWidth();
         int H = (int) screenSize.getHeight();
-        setLocation((L-1000)/2, (H-700)/2);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        getContentPane().setBackground(Color.WHITE);
+        
         
         
         btnPousser = new JButton[12];
@@ -87,13 +90,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\fondCommandes.png").getImage();
+                Image image = new ImageIcon(getClass().getResource("/images/fondCommandes.png")).getImage();
                 g.drawImage(image, 0, 32, 9 * x, 9 * x + 32, (ImageObserver) this);
             }
         };
         clrJoueur = new JPanel();
         defCouleurJ();
-        commandes.setBounds(680, 0, x * 9 + 80, x * 9 + 80);
+        commandes.setBounds(L/2+200, 0, x * 9 + 80, x * 9 + 80);
 
         add(commandes);
         layeredPane = new JLayeredPane() {
@@ -117,7 +120,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         layeredPane.add(PlateauGrph, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
         // Réglez la taille du JLayeredPane en fonction de la taille du panneau
-        layeredPane.setBounds(100, 100, x * 7 + 20, x * 7 + 20);
+        layeredPane.setBounds(L/2-400, 100, x * 7 + 20, x * 7 + 20);
         add(layeredPane);
 
         // Le reste de votre code...
@@ -137,11 +140,11 @@ public class PlateauGraphique extends javax.swing.JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\PlateauFondV2.png").getImage();
+                Image image = new ImageIcon(getClass().getResource("/images/PlateauFondV2.png")).getImage();
                 g.drawImage(image, -88, -108, 1200, 902, (ImageObserver) this);
             }
         };
-        layeredPane2.setBounds(0, 0, 1200, 902);
+        layeredPane2.setBounds(L/2-500, 0, 1200, 902);
         add(layeredPane2);
         defTuileEnPlus(layeredPane2);
         defBtnPousser(layeredPane, layeredPane2);
@@ -149,7 +152,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
         defPion();
         defBtnValider();
         afficherClassement();
-        defInstruction("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\déplacerPion.png");
+        defInstruction("/images/déplacerPion.png");
+        defAffichageClassement();
 
     }
 
@@ -371,7 +375,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         JButton droite = new JButton();
          ImageIcon imageIcon;
 
-        imageIcon = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\tournerCarte.png");
+        imageIcon = new ImageIcon(getClass().getResource("/images/tournerCarte.png"));
 
         ImageIcon imageRedimenssionne = new ImageIcon( imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         
@@ -401,13 +405,13 @@ public class PlateauGraphique extends javax.swing.JFrame {
 
     public void defPion() {
         ImageIcon[] Images = new ImageIcon[4];
-        ImageIcon Haut= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\haut.png");
+        ImageIcon Haut= new ImageIcon(getClass().getResource("/images/haut.png"));
         ImageIcon haut= new ImageIcon( Haut.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        ImageIcon Bas= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\bas.png");
+        ImageIcon Bas= new ImageIcon(getClass().getResource("/images/bas.png"));
         ImageIcon bas= new ImageIcon( Bas.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        ImageIcon Gauche= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\gauche.png");
+        ImageIcon Gauche= new ImageIcon(getClass().getResource("/images/gauche.png"));
         ImageIcon GAUCHE= new ImageIcon( Gauche.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        ImageIcon Droite= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\droite.png");
+        ImageIcon Droite= new ImageIcon(getClass().getResource("/images/droite.png"));
         ImageIcon DROITE= new ImageIcon( Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         for (int n = 0; n < nbJoueurs; n++) {
             layeredPane.add(plateau.Pions[n], JLayeredPane.PALETTE_LAYER);
@@ -537,7 +541,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         BoutonValider.setBounds(62, 580, 120, 40);
         BoutonValider.setLayout(new GridLayout(1, 1));
         JButton btnValide = new JButton();
-        ImageIcon Droite= new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\valider.png");
+        ImageIcon Droite= new ImageIcon(getClass().getResource("/images/valider.png"));
         ImageIcon DROITE= new ImageIcon( Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         btnValide.setIcon(DROITE);
         btnValide.setOpaque(false);
@@ -610,16 +614,36 @@ public class PlateauGraphique extends javax.swing.JFrame {
         commandes.add(clrJoueur, JLayeredPane.DEFAULT_LAYER);
 
     }
-
+    public void defAffichageClassement(){
+        JLabel[] laureats = new JLabel[3];
+        ImageIcon deuxieme= new ImageIcon(getClass().getResource("/images/2eme.png"));
+        ImageIcon DEUXIEME= new ImageIcon( deuxieme.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        laureats[0]=new JLabel(DEUXIEME);
+        ImageIcon troisieme= new ImageIcon(getClass().getResource("/images/3eme.png"));
+        ImageIcon TROISIEME= new ImageIcon( troisieme.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+        laureats[1]=new JLabel(TROISIEME);
+        ImageIcon quatrieme= new ImageIcon(getClass().getResource("/images/caca.png"));
+        ImageIcon QUATRIEME= new ImageIcon( quatrieme.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        laureats[2]=new JLabel(QUATRIEME);
+        
+        for (int i =0;i<nbJoueurs-2;i++){
+           laureats[i].setBounds(25,  130+35*i, 30, 30);
+           commandes.add(laureats[i], JLayeredPane.DEFAULT_LAYER);
+        }
+        if (nbJoueurs!=1){
+            laureats[2].setBounds(25,  130+35*(nbJoueurs-2), 30, 30);
+            commandes.add(laureats[2], JLayeredPane.DEFAULT_LAYER);
+        }
+    }
     public void afficherClassement() {
         plateau.classement();
         for (int i = 0; i < nbJoueurs; i++) {
             for (int j = 0; j < nbJoueurs; j++) {
                 if (plateau.classement[i][j] != null) {
-                    plateau.classement[i][j].pionPodium.setBounds(90 + j * 65, i * 40 + 95, 25, 25);
+                    plateau.classement[i][j].pionPodium.setBounds(65 + j * 40, i * 35 + 95, 25, 25);
                     commandes.add(plateau.classement[i][j].pionPodium, JLayeredPane.PALETTE_LAYER);
                     plateau.classement[i][j].Score.setText(String.valueOf(plateau.classement[i][j].compt) + " pts");
-                    plateau.classement[i][j].Score.setBounds(115 + j * 65, i * 40 + 90, 50, 20);
+                    plateau.classement[i][j].Score.setBounds(67 + j * 40, i * 35 + 111, 50, 20);
                     Font policeAgrandie = new Font(plateau.classement[i][j].Score.getFont().getName(), Font.PLAIN, 10);
                     commandes.remove(plateau.classement[i][j].Score);
                     plateau.classement[i][j].Score.setFont(policeAgrandie);
@@ -631,7 +655,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         public void defInstruction(String Chemin ){
         ImageIcon imageIcon;
 
-        imageIcon = new ImageIcon(Chemin);
+        imageIcon = new ImageIcon(getClass().getResource(Chemin));
 
         Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(227, 40, Image.SCALE_SMOOTH);
 

@@ -28,7 +28,7 @@ public class TuileGraphique extends JButton {
         repaint();
         ImageIcon imageIcon;
 
-        imageIcon = new ImageIcon(Chemin);
+        imageIcon = new ImageIcon(getClass().getResource(Chemin));
 
         Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
 
