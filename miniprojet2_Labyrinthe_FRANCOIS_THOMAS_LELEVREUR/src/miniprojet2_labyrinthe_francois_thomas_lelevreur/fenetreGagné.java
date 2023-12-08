@@ -19,11 +19,11 @@ import javax.swing.JLayeredPane;
  * @author Tanguy
  */
 public class fenetreGagné extends javax.swing.JFrame {
-    Plateau plateau;
     Rond[] Classement;
     Pion[][] classement1;
     /**
      * Creates new form fenetreGagné
+     * @param classement
      */
     public fenetreGagné(Pion[][] classement) {
         
@@ -52,10 +52,10 @@ public class fenetreGagné extends javax.swing.JFrame {
         layeredPane.setBounds(0, 0, 448, 448);
         add(layeredPane);
         int rg = 0;
-        for (int i = 0; i<classement1.length;i++){
-            for (int j = 0; j<classement1.length;j++){
-                if (classement1[i][j]!=null){
-                    Classement[rg]=classement1[i][j].pionClassement;
+        for (Pion[] classement11 : classement1) {
+            for (int j = 0; j<classement1.length; j++) {
+                if (classement11[j] != null) {
+                    Classement[rg] = classement11[j].pionClassement;
                     rg+=1;
                 }
             }
