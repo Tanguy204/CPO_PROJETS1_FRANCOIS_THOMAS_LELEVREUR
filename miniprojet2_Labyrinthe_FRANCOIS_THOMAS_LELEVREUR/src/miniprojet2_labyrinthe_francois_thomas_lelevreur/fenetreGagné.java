@@ -38,18 +38,18 @@ public class fenetreGagné extends javax.swing.JFrame {
         
         setLocation((L-1000)/2+100,(H-700)/2+ 100);
         
-        Image image = new ImageIcon("C:\\OneDrive - Fondation EPF\\Documents\\Cours\\2ème année\\CPO\\CPO_PROJET_LAB\\victoire.png").getImage();
-        Image imageRedimenssionne = image.getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
+        Image image = new ImageIcon(getClass().getResource("/images/victoire.png")).getImage();
+        Image imageRedimenssionne = image.getScaledInstance(448, 448, Image.SCALE_SMOOTH);
 
         Image imageADessiner = new ImageIcon(imageRedimenssionne).getImage();
         JLayeredPane layeredPane = new JLayeredPane() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(imageADessiner, 0, 0, 640, 640, (ImageObserver) this);
+                g.drawImage(imageADessiner, 0, 0, 448, 448, (ImageObserver) this);
             }
         };
-        layeredPane.setBounds(0, 0, 640, 640);
+        layeredPane.setBounds(0, 0, 448, 448);
         add(layeredPane);
         int rg = 0;
         for (int i = 0; i<classement1.length;i++){
@@ -60,9 +60,13 @@ public class fenetreGagné extends javax.swing.JFrame {
                 }
             }
         }
-        Classement[0].setBounds(302,230,35,35);
-        Classement[1].setBounds(237,255,35,35);
-        Classement[2].setBounds(365,280,35,35);
+        Classement[0].setBounds(210,155,30,30);
+        if (Classement[1]!=null){
+        Classement[1].setBounds(157,175,30,30);
+        }
+        if (Classement[2]!=null){
+            Classement[2].setBounds(255,193,30,30);
+        }
         for (int t=0 ; t<4;t++){
             if (Classement[t]!=null){
             layeredPane.add(Classement[t], JLayeredPane.DEFAULT_LAYER);
