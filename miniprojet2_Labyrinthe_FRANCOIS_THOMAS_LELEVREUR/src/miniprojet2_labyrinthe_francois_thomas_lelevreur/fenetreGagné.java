@@ -3,11 +3,16 @@ package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.ImageObserver;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -22,6 +27,7 @@ public class fenetreGagné extends javax.swing.JFrame {
     Plateau plateau;
     Rond[] Classement;
     Pion[][] classement1;
+    
     /**
      * Creates new form fenetreGagné
      */
@@ -72,6 +78,26 @@ public class fenetreGagné extends javax.swing.JFrame {
             layeredPane.add(Classement[t], JLayeredPane.DEFAULT_LAYER);
             }
         }
+        JPanel btnGagné = new JPanel();
+        btnGagné.setOpaque(false);
+        btnGagné.setLayout(new GridLayout(1, 2));
+        JButton Jbtncontinuer = new JButton();
+        
+        
+        ActionListener droite = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                
+
+                repaint();
+
+            }
+        };
+        Jbtncontinuer.addActionListener(droite);
+        btnGagné.add(Jbtncontinuer);
+        Jbtncontinuer.setBounds(142, 540, 40, 40);
     }
 
     /**
