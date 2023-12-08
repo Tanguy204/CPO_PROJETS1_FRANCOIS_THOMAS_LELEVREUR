@@ -21,34 +21,19 @@ import javax.swing.JButton;
  */
 public class CarteObjectif extends JButton  {
     String item;
-    Plateau plateau;
-    Pion proprietaire;
     String Chemin;
     Image imageADessiner;
-    boolean Valide;
-    ImageIcon imagededos;
+    boolean Valide;    
     boolean vision;
     public CarteObjectif(String Item,String chemin){
         item = Item;
-        Chemin = chemin;
-        
+        Chemin = chemin;       
         repaint();
         ImageIcon imageIcon;
-
         imageIcon = new ImageIcon(getClass().getResource(Chemin));
-
         Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(64, 100, Image.SCALE_SMOOTH);
-        imageADessiner = new ImageIcon(imageRedimenssionne).getImage();
-        
-        
-        
-        
-        
-        
+        imageADessiner = new ImageIcon(imageRedimenssionne).getImage();      
     }
-
-   
-    
  
     @Override
     protected void paintComponent(Graphics g) {

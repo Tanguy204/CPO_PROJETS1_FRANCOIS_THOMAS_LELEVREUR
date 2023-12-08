@@ -4,14 +4,17 @@
  */
 package miniprojet2_labyrinthe_francois_thomas_lelevreur;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.ImageObserver;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -21,18 +24,25 @@ import javax.swing.JPanel;
  */
 public class FenetreAccueil extends javax.swing.JFrame {
 
-    JPanel btnJouers;
+    final JFrame[] plateaux;
 
     /**
      * Creates new form FenetreAccueil
      */
     public FenetreAccueil() {
-
         initComponents();
+        plateaux = new JFrame[4];
         Image image = new ImageIcon(getClass().getResource("/images/accueil.png")).getImage();
-        Image imageRedimenssionne = image.getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
+        Image imageRedimenssionne = image.getScaledInstance(640, 640, Image.SCALE_SMOOTH);
 
         Image imageADessiner = new ImageIcon(imageRedimenssionne).getImage();
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+        Dimension screenSize = toolkit.getScreenSize();
+        int L = (int) screenSize.getWidth();
+        int H = (int) screenSize.getHeight();
+        setLocation(L / 2 - 320, H / 2 - 320);
+        setSize(640, 640);
         JLayeredPane layeredPane = new JLayeredPane() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -42,28 +52,27 @@ public class FenetreAccueil extends javax.swing.JFrame {
         };
         layeredPane.setBounds(0, 0, 1200, 1200);
         add(layeredPane);
+        int y = 87;
+        for (int i = 0; i < 4; i++) {
+            final int j = i;
+            JPanel btnJouer = new JPanel();
 
-        
-            int y = 87;
-            btnJouers = new JPanel();
-            
-            btnJouers.setLayout(new GridLayout(1, 1));// Les valeurs RGB pour le bleu marine peuvent varier
+            btnJouer.setLayout(new GridLayout(1, 1));
 
-            btnJouers.setBounds(205, 225 +  y, 210, 40);
-            
+            btnJouer.setBounds(205, 225 + i * y, 210, 40);
 
             JButton UnJoueur = new JButton();
-            btnJouers.setOpaque(false);
-            
+             UnJoueur.setOpaque(false);
+        UnJoueur.setContentAreaFilled(false);
+        UnJoueur.setBorderPainted(false);
+            btnJouer.setOpaque(false);
 
-            UnJoueur.setBounds(0, 0, 200, 100);
-           
             ActionListener ecouteur = new ActionListener() {
-            
+
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    new PlateauGraphique(1).setVisible(true);
+                    new PlateauGraphique(j + 1).setVisible(true);
 
                     setVisible(false);
 
@@ -72,52 +81,12 @@ public class FenetreAccueil extends javax.swing.JFrame {
                 }
             };
             UnJoueur.addActionListener(ecouteur);
-            btnJouers.add(UnJoueur);
-            JButton DeuxJoueurs = new JButton();
-            btnJouers.setOpaque(false);
-            
+            btnJouer.add(UnJoueur);
+            layeredPane.add(btnJouer);
 
-            DeuxJoueurs.setBounds(0, 0, 200+y, 100);
-           
-            ActionListener deuxjoueurs = new ActionListener() {
-            
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                    new PlateauGraphique(2).setVisible(true);
-
-                    setVisible(false);
-
-                    repaint();
-
-                }
-            };
-            DeuxJoueurs.addActionListener(deuxjoueurs);
-            btnJouers.add(DeuxJoueurs);
-            JButton TroisJoueur = new JButton();
-            btnJouers.setOpaque(false);
-            
-
-            TroisJoueur.setBounds(0, 0, 200+2*y, 100);
-           
-            ActionListener troisjoueurs = new ActionListener() {
-            
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                    new PlateauGraphique(3).setVisible(true);
-
-                    setVisible(false);
-
-                    repaint();
-
-                }
-            };
-            TroisJoueur.addActionListener(troisjoueurs);
-            btnJouers.add(TroisJoueur);
-            layeredPane.add(btnJouers);
         }
-    
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
