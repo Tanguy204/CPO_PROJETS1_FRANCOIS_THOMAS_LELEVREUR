@@ -14,12 +14,16 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
-import java.util.ArrayList;
+import java.util.HashSet;
+
 import java.util.Random;
-import javax.swing.BorderFactory;
+import java.util.Set;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,6 +36,7 @@ import javax.swing.JPanel;
  * @author Tanguy
  */
 public class PlateauGraphique extends javax.swing.JFrame {
+    private Set<Integer> pressedKeys = new HashSet<>();
 
     Plateau plateau;
     JPanel PlateauGrph;
@@ -46,7 +51,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
     JLayeredPane layeredPion;
     JPanel clrJoueur;
     JLabel instruction;
-
+    JPanel touches;
 
     int tourDe;
     int nbJoueurs;
@@ -58,8 +63,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
      */
     public PlateauGraphique(int nbJoueurs) {
         initComponents();
-        
-        
+        touches=new JPanel();
+
         Toolkit toolkit = Toolkit.getDefaultToolkit();
 
         Dimension screenSize = toolkit.getScreenSize();
@@ -67,9 +72,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         int H = (int) screenSize.getHeight();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         getContentPane().setBackground(Color.WHITE);
-        
-        
-        
+
         btnPousser = new JButton[12];
         btnDeplacer = new JButton[4];
         plateau = new Plateau(nbJoueurs);
@@ -80,7 +83,6 @@ public class PlateauGraphique extends javax.swing.JFrame {
         }
         this.nbJoueurs = nbJoueurs;
 
-        
         Random random = new Random();
         tourDe = random.nextInt(Math.abs(nbJoueurs));
 
@@ -96,7 +98,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         };
         clrJoueur = new JPanel();
         defCouleurJ();
-        commandes.setBounds(L/2+200, 0, x * 9 + 80, x * 9 + 80);
+        commandes.setBounds(L / 2 + 200, 0, x * 9 + 80, x * 9 + 80);
 
         add(commandes);
         layeredPane = new JLayeredPane() {
@@ -120,7 +122,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         layeredPane.add(PlateauGrph, JLayeredPane.DEFAULT_LAYER); // Utilisez DEFAULT_LAYER ou un autre entier pour spécifier la couche
 
         // Réglez la taille du JLayeredPane en fonction de la taille du panneau
-        layeredPane.setBounds(L/2-400, 100, x * 7 + 20, x * 7 + 20);
+        layeredPane.setBounds(L / 2 - 400, 100, x * 7 + 20, x * 7 + 20);
         add(layeredPane);
 
         // Le reste de votre code...
@@ -144,7 +146,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 g.drawImage(image, -88, -108, 1200, 902, (ImageObserver) this);
             }
         };
-        layeredPane2.setBounds(L/2-500, 0, 1200, 902);
+        layeredPane2.setBounds(L / 2 - 500, 0, 1200, 902);
         add(layeredPane2);
         defTuileEnPlus(layeredPane2);
         defBtnPousser(layeredPane, layeredPane2);
@@ -258,7 +260,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
             BoutonsPousser[k].setBounds(110 + imp * x, 36, x, x);
             BoutonsPousser[k].add(pousse);
             layeredPane2.add(BoutonsPousser[k], JLayeredPane.DEFAULT_LAYER);
-            
+
         }
         for (int k = 0; k < 3; k++) {
 
@@ -373,18 +375,16 @@ public class PlateauGraphique extends javax.swing.JFrame {
         BtnTourner.setBounds(42, 350, 40, 40);
         BtnTourner.setLayout(new GridLayout(1, 1));
         JButton droite = new JButton();
-         ImageIcon imageIcon;
+        ImageIcon imageIcon;
 
         imageIcon = new ImageIcon(getClass().getResource("/images/tournerCarte.png"));
 
-        ImageIcon imageRedimenssionne = new ImageIcon( imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        
-        
-        
+        ImageIcon imageRedimenssionne = new ImageIcon(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+
         droite.setIcon(imageRedimenssionne);
         droite.setOpaque(false);
-            droite.setContentAreaFilled(false);
-            droite.setBorderPainted(false);
+        droite.setContentAreaFilled(false);
+        droite.setBorderPainted(false);
         BtnTourner.setOpaque(false);
 
         ActionListener ecouteurClick = new ActionListener() {
@@ -399,20 +399,20 @@ public class PlateauGraphique extends javax.swing.JFrame {
         };
         droite.addActionListener(ecouteurClick);
         BtnTourner.add(droite);
-        commandes.add(BtnTourner, JLayeredPane.DEFAULT_LAYER); 
+        commandes.add(BtnTourner, JLayeredPane.DEFAULT_LAYER);
 
     }
 
     public void defPion() {
         ImageIcon[] Images = new ImageIcon[4];
-        ImageIcon Haut= new ImageIcon(getClass().getResource("/images/haut.png"));
-        ImageIcon haut= new ImageIcon( Haut.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        ImageIcon Bas= new ImageIcon(getClass().getResource("/images/bas.png"));
-        ImageIcon bas= new ImageIcon( Bas.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        ImageIcon Gauche= new ImageIcon(getClass().getResource("/images/gauche.png"));
-        ImageIcon GAUCHE= new ImageIcon( Gauche.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        ImageIcon Droite= new ImageIcon(getClass().getResource("/images/droite.png"));
-        ImageIcon DROITE= new ImageIcon( Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Haut = new ImageIcon(getClass().getResource("/images/haut.png"));
+        ImageIcon haut = new ImageIcon(Haut.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Bas = new ImageIcon(getClass().getResource("/images/bas.png"));
+        ImageIcon bas = new ImageIcon(Bas.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Gauche = new ImageIcon(getClass().getResource("/images/gauche.png"));
+        ImageIcon GAUCHE = new ImageIcon(Gauche.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Droite = new ImageIcon(getClass().getResource("/images/droite.png"));
+        ImageIcon DROITE = new ImageIcon(Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         for (int n = 0; n < nbJoueurs; n++) {
             layeredPane.add(plateau.Pions[n], JLayeredPane.PALETTE_LAYER);
         }
@@ -422,11 +422,11 @@ public class PlateauGraphique extends javax.swing.JFrame {
         JButton btnMonte = new JButton();
         btnMonte.setIcon(haut);
         btnMonte.setOpaque(false);
-            btnMonte.setContentAreaFilled(false);
-            btnMonte.setBorderPainted(false);
-        
+        btnMonte.setContentAreaFilled(false);
+        btnMonte.setBorderPainted(false);
+
         ActionListener Monte = new ActionListener() {
-        
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 plateau.avancerHaut(plateau.Pions[tourDe]);
@@ -447,8 +447,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
         JButton btnDesc = new JButton();
         btnDesc.setIcon(bas);
         btnDesc.setOpaque(false);
-            btnDesc.setContentAreaFilled(false);
-            btnDesc.setBorderPainted(false);
+        btnDesc.setContentAreaFilled(false);
+        btnDesc.setBorderPainted(false);
         ActionListener Descendre = new ActionListener() {
 
             @Override
@@ -479,8 +479,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
         JButton JbtnDroit = new JButton();
         JbtnDroit.setIcon(DROITE);
         JbtnDroit.setOpaque(false);
-            JbtnDroit.setContentAreaFilled(false);
-            JbtnDroit.setBorderPainted(false);
+        JbtnDroit.setContentAreaFilled(false);
+        JbtnDroit.setBorderPainted(false);
         ActionListener droite = new ActionListener() {
 
             @Override
@@ -503,8 +503,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
         btnGauche.setLayout(new GridLayout(1, 1));
         JButton JbtnGauche = new JButton();
         JbtnGauche.setOpaque(false);
-            JbtnGauche.setContentAreaFilled(false);
-            JbtnGauche.setBorderPainted(false);
+        JbtnGauche.setContentAreaFilled(false);
+        JbtnGauche.setBorderPainted(false);
         JbtnGauche.setIcon(GAUCHE);
         ActionListener gauche = new ActionListener() {
 
@@ -541,24 +541,26 @@ public class PlateauGraphique extends javax.swing.JFrame {
         BoutonValider.setBounds(62, 580, 120, 40);
         BoutonValider.setLayout(new GridLayout(1, 1));
         JButton btnValide = new JButton();
-        ImageIcon Droite= new ImageIcon(getClass().getResource("/images/valider.png"));
-        ImageIcon DROITE= new ImageIcon( Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon Droite = new ImageIcon(getClass().getResource("/images/valider.png"));
+        ImageIcon DROITE = new ImageIcon(Droite.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         btnValide.setIcon(DROITE);
         btnValide.setOpaque(false);
-            btnValide.setContentAreaFilled(false);
-            btnValide.setBorderPainted(false);
+        btnValide.setContentAreaFilled(false);
+        btnValide.setBorderPainted(false);
         ActionListener valider;
-        valider = new ActionListener() {
-            
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                plateau.Pions[tourDe].CarteValide();
-                afficherClassement();
-                if (plateau.Pions[tourDe].gagné()==true){
-                    new fenetreGagné(plateau.classement).setVisible(true);
+        
+        
+        touches.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        plateau.Pions[tourDe].CarteValide();
+                        afficherClassement();
+                    if (plateau.Pions[tourDe].gagné() == true) {
+                         Victoire();
+                    
                 }
-               
+
                 if (tourDe == nbJoueurs - 1) {
                     tourDe = 0;
                 } else {
@@ -575,18 +577,115 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 defCarteObj();
 
                 defCouleurJ();
+
+                repaint();
+
+                        
+                        
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_UP) {
+                        plateau.avancerHaut(plateau.Pions[tourDe]);
+
+                layeredPane.remove(plateau.Pions[tourDe]);
+                layeredPane.add(plateau.Pions[tourDe], JLayeredPane.PALETTE_LAYER);
+
+                repaint();
+                    }
+                    if (e.getKeyChar() == 's') {
+                        plateau.avancerBas(plateau.Pions[tourDe]);
+
+                    layeredPane.remove(plateau.Pions[tourDe]);
+                    layeredPane.add(plateau.Pions[tourDe], JLayeredPane.PALETTE_LAYER);
+
+                repaint();
+                    }
+                    if (e.getKeyChar() == 'q') {
+                        
+                    }
+                    if (e.getKeyChar() == 'z') {
+                        
+                    }
+                }
                 
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        plateau.Pions[tourDe].CarteValide();
+                afficherClassement();
+                if (plateau.Pions[tourDe].gagné() == true) {
+                    Victoire();
+                    
+                }
+
+                if (tourDe == nbJoueurs - 1) {
+                    tourDe = 0;
+                } else {
+                    tourDe += 1;
+                }
+                for (int i = 0; i < 12; i++) {
+                    btnPousser[i].setEnabled(true);
+                }
+                for (int i = 0; i < 4; i++) {
+                    btnDeplacer[i].setEnabled(false);
+                }
+                plateau.Pions[tourDe].CarteValide();
+                commandes.remove(CarteObj);
+                defCarteObj();
+
+                defCouleurJ();
+
+                repaint();
+
+                        
+                        
+                    }
+                    
+                    
+                }
                 
-                
-                
-                
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    // Gérer le relâchement des touches si nécessaire
+                }
+            });
+        valider = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                plateau.Pions[tourDe].CarteValide();
+                afficherClassement();
+                if (plateau.Pions[tourDe].gagné() == true) {
+                    Victoire();
+                    
+                }
+
+                if (tourDe == nbJoueurs - 1) {
+                    tourDe = 0;
+                } else {
+                    tourDe += 1;
+                }
+                for (int i = 0; i < 12; i++) {
+                    btnPousser[i].setEnabled(true);
+                }
+                for (int i = 0; i < 4; i++) {
+                    btnDeplacer[i].setEnabled(false);
+                }
+                plateau.Pions[tourDe].CarteValide();
+                commandes.remove(CarteObj);
+                defCarteObj();
+
+                defCouleurJ();
+
                 repaint();
 
             }
         };
+        touches.setFocusable(true);
+        add(touches);
         btnValide.addActionListener(valider);
         BoutonValider.add(btnValide);
-        
+
         commandes.add(BoutonValider, JLayeredPane.DEFAULT_LAYER);
 
     }
@@ -614,27 +713,29 @@ public class PlateauGraphique extends javax.swing.JFrame {
         commandes.add(clrJoueur, JLayeredPane.DEFAULT_LAYER);
 
     }
-    public void defAffichageClassement(){
+
+    public void defAffichageClassement() {
         JLabel[] laureats = new JLabel[3];
-        ImageIcon deuxieme= new ImageIcon(getClass().getResource("/images/2eme.png"));
-        ImageIcon DEUXIEME= new ImageIcon( deuxieme.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        laureats[0]=new JLabel(DEUXIEME);
-        ImageIcon troisieme= new ImageIcon(getClass().getResource("/images/3eme.png"));
-        ImageIcon TROISIEME= new ImageIcon( troisieme.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
-        laureats[1]=new JLabel(TROISIEME);
-        ImageIcon quatrieme= new ImageIcon(getClass().getResource("/images/caca.png"));
-        ImageIcon QUATRIEME= new ImageIcon( quatrieme.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
-        laureats[2]=new JLabel(QUATRIEME);
-        
-        for (int i =0;i<nbJoueurs-2;i++){
-           laureats[i].setBounds(25,  130+35*i, 30, 30);
-           commandes.add(laureats[i], JLayeredPane.DEFAULT_LAYER);
+        ImageIcon deuxieme = new ImageIcon(getClass().getResource("/images/2eme.png"));
+        ImageIcon DEUXIEME = new ImageIcon(deuxieme.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        laureats[0] = new JLabel(DEUXIEME);
+        ImageIcon troisieme = new ImageIcon(getClass().getResource("/images/3eme.png"));
+        ImageIcon TROISIEME = new ImageIcon(troisieme.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+        laureats[1] = new JLabel(TROISIEME);
+        ImageIcon quatrieme = new ImageIcon(getClass().getResource("/images/caca.png"));
+        ImageIcon QUATRIEME = new ImageIcon(quatrieme.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        laureats[2] = new JLabel(QUATRIEME);
+
+        for (int i = 0; i < nbJoueurs - 2; i++) {
+            laureats[i].setBounds(25, 130 + 35 * i, 30, 30);
+            commandes.add(laureats[i], JLayeredPane.DEFAULT_LAYER);
         }
-        if (nbJoueurs!=1){
-            laureats[2].setBounds(25,  130+35*(nbJoueurs-2), 30, 30);
+        if (nbJoueurs != 1) {
+            laureats[2].setBounds(25, 130 + 35 * (nbJoueurs - 2), 30, 30);
             commandes.add(laureats[2], JLayeredPane.DEFAULT_LAYER);
         }
     }
+
     public void afficherClassement() {
         plateau.classement();
         for (int i = 0; i < nbJoueurs; i++) {
@@ -652,7 +753,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
             }
         }
     }
-        public void defInstruction(String Chemin ){
+
+    public void defInstruction(String Chemin) {
         ImageIcon imageIcon;
 
         imageIcon = new ImageIcon(getClass().getResource(Chemin));
@@ -660,17 +762,20 @@ public class PlateauGraphique extends javax.swing.JFrame {
         Image imageRedimenssionne = imageIcon.getImage().getScaledInstance(227, 40, Image.SCALE_SMOOTH);
 
         ImageIcon imageADessiner = new ImageIcon(imageRedimenssionne);
-    
-        instruction =new JLabel();
+
+        instruction = new JLabel();
         instruction.setIcon(imageADessiner);
-        
-        instruction.setBounds(10,420,227,40);
-        
-       
+
+        instruction.setBounds(10, 420, 227, 40);
+
         commandes.add(instruction, JLayeredPane.DEFAULT_LAYER);
-    repaint();
+        repaint();
     }
     
+    public void Victoire(){
+        new fenetreGagné(plateau.classement,nbJoueurs).setVisible(true);
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -733,8 +838,8 @@ public class PlateauGraphique extends javax.swing.JFrame {
     private void setContentAreaFilled(boolean b) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

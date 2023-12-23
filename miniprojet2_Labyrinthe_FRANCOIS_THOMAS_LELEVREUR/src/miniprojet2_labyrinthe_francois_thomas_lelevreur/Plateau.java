@@ -315,7 +315,7 @@ public final class Plateau {
                     
                 
                 Pions[i].cartesObjs[j] = PileDeCartes.get(0);
-                PileDeCartes.remove(Pions[i].cartesObjs[i]);
+                PileDeCartes.remove(Pions[i].cartesObjs[j]);
                 
                 
                 

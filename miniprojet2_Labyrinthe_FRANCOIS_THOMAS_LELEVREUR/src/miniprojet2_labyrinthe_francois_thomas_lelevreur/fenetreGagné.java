@@ -26,13 +26,15 @@ import javax.swing.JPanel;
 public class fenetreGagné extends javax.swing.JFrame {
     Rond[] Classement;
     Pion[][] classement1;
-    
+    JButton Accueil;
+    JButton Rejouer ;
+    int nbJoueurs;
     /**
      * Creates new form fenetreGagné
      * @param classement
      */
-    public fenetreGagné(Pion[][] classement) {
-        
+    public fenetreGagné(Pion[][] classement, int nb) {
+        nbJoueurs= nb;
         initComponents();
         classement1=classement;
         Classement= new Rond[4];
@@ -80,25 +82,44 @@ public class fenetreGagné extends javax.swing.JFrame {
         }
         JPanel btnGagné = new JPanel();
         btnGagné.setOpaque(false);
-        btnGagné.setLayout(new GridLayout(1, 2));
-        JButton Jbtncontinuer = new JButton();
+        btnGagné.setLayout(new GridLayout(2, 1));
+        Accueil=new JButton();
+        Rejouer= new JButton();
         
         
-        ActionListener droite = new ActionListener() {
+        ActionListener accueil = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                new FenetreAccueil().setVisible(true);
                 
 
                 repaint();
 
             }
         };
-        Jbtncontinuer.addActionListener(droite);
-        btnGagné.add(Jbtncontinuer);
-        Jbtncontinuer.setBounds(142, 540, 40, 40);
+        ActionListener rejouer = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                new PlateauGraphique(nbJoueurs).setVisible(true);
+                
+
+                repaint();
+
+            }
+        };
+        Accueil.addActionListener(accueil);
+        Rejouer.addActionListener(rejouer);
+        btnGagné.add(Accueil);
+        btnGagné.add(Rejouer);
+        
+        btnGagné.setBounds(170, 255, 100, 40);
+        layeredPane.add(btnGagné, JLayeredPane.PALETTE_LAYER);
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.

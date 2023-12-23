@@ -123,9 +123,11 @@ public class Pion extends JLabel {
         g.fillOval(3, 1, w - 4, h - 4);
     }
     public boolean gagné(){
-        if (compt==1){
+        if (compt==cartesObjs.length){
+            gagné=true;
             return true ;
         } 
+        gagné=false;
         return false;
     }
   
