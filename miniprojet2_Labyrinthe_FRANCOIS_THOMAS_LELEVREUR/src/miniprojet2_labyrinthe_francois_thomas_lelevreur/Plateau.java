@@ -418,7 +418,7 @@ public void classement() {
             int k=nbJoueurs-j;
             
             if (pionBis[i].compt==pionBis[k].compt ){
-                System.out.println("j"+j);
+                
                 int Qcol=0;
                 while(classement[k][Qcol]!=null){
                     Qcol+=1;
@@ -438,13 +438,7 @@ public void classement() {
 
     // Placer les pions triés dans le tableau de classement
    
-    for (int i = 0; i < nbJoueurs; i++) {
-        for (int j = 0; j < nbJoueurs; j++) {
-            if (classement[i][j] != null) {
-                System.out.println("Classement [" + i + "][" + j + "]: couleur=" + classement[i][j].clr + ", compt=" + classement[i][j].compt);
-            }
-        }
-    }
+    
 }
 }
 

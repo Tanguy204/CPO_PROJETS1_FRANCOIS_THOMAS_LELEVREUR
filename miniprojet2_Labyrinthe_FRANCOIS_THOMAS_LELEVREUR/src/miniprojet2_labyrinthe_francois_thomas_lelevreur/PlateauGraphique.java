@@ -78,7 +78,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
         plateau = new Plateau(nbJoueurs);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
-                System.out.println(plateau.Labyrinthe[i][j].CoteBas + " " + plateau.Labyrinthe[i][j].CoteGauche + " " + plateau.Labyrinthe[i][j].CoteHaut + " " + plateau.Labyrinthe[i][j].CoteDroit + "ligne" + i);
+                
             }
         }
         this.nbJoueurs = nbJoueurs;
@@ -437,7 +437,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 repaint();
                 for (int i = 0; i < 7; i++) {
                     for (int j = 0; j < 7; j++) {
-                        System.out.println(plateau.Labyrinthe[i][j].CoteBas + " " + plateau.Labyrinthe[i][j].CoteGauche + " " + plateau.Labyrinthe[i][j].CoteHaut + " " + plateau.Labyrinthe[i][j].CoteDroit + "ligne" + i);
+                        
                     }
                 }
 
@@ -461,7 +461,7 @@ public class PlateauGraphique extends javax.swing.JFrame {
                 repaint();
                 for (int i = 0; i < 7; i++) {
                     for (int j = 0; j < 7; j++) {
-                        System.out.println(plateau.Labyrinthe[i][j].CoteBas + " " + plateau.Labyrinthe[i][j].CoteGauche + " " + plateau.Labyrinthe[i][j].CoteHaut + " " + plateau.Labyrinthe[i][j].CoteDroit + "ligne" + i);
+                        
                     }
                 }
 
